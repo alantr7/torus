@@ -3,7 +3,6 @@ package com.github.alantr7.torus.item;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.structure.Structure;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,6 +38,7 @@ public class ItemConfigLoader {
                 ItemReference base = ItemReference.parse(data.getString("base"));
                 String headTexture = data.getString("head_texture_url");
                 String name = data.getString("name");
+                String customModelData = data.getString("custom_model_data");
                 List<String> categoriesRaw = data.getStringList("categories");
                 List<String> lore = data.getStringList("lore");
 
@@ -61,7 +61,7 @@ public class ItemConfigLoader {
 
                 torusItem.setCategories(categories.toArray(Category[]::new));
                 torusItem.setBaseItem(
-                  baseItem.getType() == Material.PLAYER_HEAD && headTexture != null ? new HeadData(headTexture).stack : base.getItem(), name, lore
+                  baseItem.getType() == Material.PLAYER_HEAD && headTexture != null ? new HeadData(headTexture).stack : base.getItem(), name, lore, customModelData
                 );
             }
         }

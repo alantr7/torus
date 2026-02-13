@@ -5,6 +5,7 @@ import com.github.alantr7.bukkitplugin.annotations.generative.JavaPlugin;
 import com.github.alantr7.bukkitplugin.annotations.generative.SoftDepends;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocate;
 import com.github.alantr7.bukkitplugin.annotations.relocate.Relocations;
+import com.github.alantr7.bukkitplugin.versions.Version;
 import com.github.alantr7.torus.addon.DefaultAddonLifecycleAdapter;
 import com.github.alantr7.torus.addon.TorusAddonManager;
 import com.github.alantr7.torus.api.TorusAPI;
@@ -22,6 +23,7 @@ import com.github.alantr7.torus.model.ModelManager;
 import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
+import com.github.alantr7.torus.utils.Compatibility;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
@@ -30,6 +32,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.File;
@@ -110,12 +113,20 @@ public class TorusPlugin extends BukkitPlugin {
                         continue;
 
                     ItemStack baseItem = item.getBaseItem();
-                    config.set(item.id + ".base", ItemReference.create(baseItem).toString());
+                    config.set(item.id + ".base", ItemReference.create(baseItem).toString().toLowerCase());
                     config.set(item.id + ".name", item.name);
                     config.set(item.id + ".lore", baseItem.getItemMeta().getLore());
                     config.set(item.id + ".categories", List.of(category.namespacedId));
                     if (baseItem.getType() == Material.PLAYER_HEAD) {
                         config.set(item.id + ".head_texture_url", ((SkullMeta) baseItem.getItemMeta()).getPlayerProfile().getTextures().getSkin().toExternalForm());
+                    }
+                    if (baseItem.hasItemMeta()) {
+                        ItemMeta meta = baseItem.getItemMeta();
+                        if (Version.getServerVersion().isOlderThan(Compatibility.V1_21_4) && meta.hasCustomModelData()) {
+                            config.set(item.id + ".custom_model_data", meta.getCustomModelData());
+                        } else if (!Version.getServerVersion().isOlderThan(Compatibility.V1_21_4) && meta.hasCustomModelDataComponent() && !meta.getCustomModelDataComponent().getStrings().isEmpty()) {
+                            config.set(item.id + ".custom_model_data", baseItem.getItemMeta().getCustomModelDataComponent().getStrings().get(0));
+                        }
                     }
                 }
 

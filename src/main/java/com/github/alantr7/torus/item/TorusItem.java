@@ -3,7 +3,7 @@ package com.github.alantr7.torus.item;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.addon.TorusAddon;
 import com.github.alantr7.torus.structure.Structure;
-import com.github.alantr7.torus.utils.ItemUtils;
+import com.github.alantr7.torus.utils.Compatibility;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
@@ -11,8 +11,8 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -53,7 +53,7 @@ public class TorusItem {
         this.name = name;
         this.structure = structure;
         this.categories = categories;
-        setBaseItem(stack, name, lore);
+        setBaseItem(stack, name, lore, namespacedId);
     }
 
     public boolean isPlaceable() {
@@ -100,7 +100,7 @@ public class TorusItem {
         return itemStack;
     }
 
-    public void setBaseItem(ItemStack itemStack, String name, List<String> lore) {
+    public void setBaseItem(ItemStack itemStack, String name, List<String> lore, @Nullable String customModelData) {
         baseItem = itemStack.clone();
         ItemMeta meta = baseItem.getItemMeta();
         meta.getPersistentDataContainer().set(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"), PersistentDataType.STRING, namespacedId);
@@ -119,7 +119,9 @@ public class TorusItem {
         meta.setLore(lore0);
         baseItem.setItemMeta(meta);
 
-        ItemUtils.applyCustomModelData(baseItem, namespacedId);
+        if (customModelData != null) {
+            Compatibility.applyCustomModelData(baseItem, customModelData);
+        }
     }
 
     public static TorusItem getById(String id) {

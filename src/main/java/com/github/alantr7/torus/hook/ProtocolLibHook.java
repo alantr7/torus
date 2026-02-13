@@ -14,6 +14,7 @@ import com.github.alantr7.bukkitplugin.versions.Version;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.utils.Compatibility;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import org.bukkit.GameMode;
@@ -26,11 +27,9 @@ public class ProtocolLibHook {
     @Inject
     TorusWorldManager worldManager;
 
-    private static final Version V1_21_4 = Version.from("1.21.4");
-
     @Invoke(Invoke.Schedule.AFTER_PLUGIN_ENABLE)
     void registerListener() {
-        if (TorusPlugin.getInstance().getVersion().isOlderThan(V1_21_4))
+        if (TorusPlugin.getInstance().getVersion().isOlderThan(Compatibility.V1_21_4))
             return;
 
         registerItemPickupFromBlockPacketListener();

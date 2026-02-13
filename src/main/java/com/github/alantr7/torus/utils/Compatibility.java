@@ -9,9 +9,10 @@ import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import java.util.Collections;
 
-public class ItemUtils {
+public class Compatibility {
 
-    private static final Version V1_21_4 = Version.from("1.21.4");
+    public static final Version V1_21_4 = Version.from("1.21.4");
+
     public static void applyCustomModelData(ItemStack item, String cmd) {
         if (!item.hasItemMeta())
             return;
@@ -31,5 +32,7 @@ public class ItemUtils {
 
         item.setItemMeta(meta);
     }
+
+
 
 }

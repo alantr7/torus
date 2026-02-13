@@ -10,12 +10,10 @@ import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.RendererConfigLoader;
 import com.github.alantr7.torus.model.animation.Animation;
 import com.github.alantr7.torus.model.animation.AnimationProvider;
-import com.github.alantr7.torus.utils.ItemUtils;
+import com.github.alantr7.torus.utils.Compatibility;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -141,7 +139,7 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
 
 
         if (itemAttributes.containsKey("model")) {
-            ItemUtils.applyCustomModelData(itemStack, itemAttributes.get("model"));
+            Compatibility.applyCustomModelData(itemStack, itemAttributes.get("model"));
         }
 
         return new PartModelElementItemDisplayRenderer(itemStack, offsetScaleRotation);
