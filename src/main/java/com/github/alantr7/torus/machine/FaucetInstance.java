@@ -11,6 +11,7 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.Fluid;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -60,6 +61,7 @@ public class FaucetInstance extends StructureInstance {
             bucket.setAmount(bucket.getAmount() - 1);
             player.getInventory().addItem(new ItemStack(fluid == Fluid.WATER ? Material.WATER_BUCKET : Material.LAVA_BUCKET));
         }
+        player.playSound(player.getLocation(), fluid == Fluid.WATER ? Sound.ITEM_BUCKET_FILL : Sound.ITEM_BUCKET_FILL_LAVA, 0.8f, 1f);
     }
 
 }
