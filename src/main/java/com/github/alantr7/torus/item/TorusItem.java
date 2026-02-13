@@ -95,6 +95,9 @@ public class TorusItem {
     public ItemStack getBaseItem() {
         ItemStack itemStack = baseItem.clone();
         ItemMeta meta = itemStack.getItemMeta();
+        if (meta.hasLore() && !meta.getLore().isEmpty()) {
+            meta.setLore(meta.getLore().subList(1, meta.getLore().size()));
+        }
         meta.getPersistentDataContainer().remove(new NamespacedKey(TorusPlugin.getInstance(), "torus_item"));
         itemStack.setItemMeta(meta);
         return itemStack;
