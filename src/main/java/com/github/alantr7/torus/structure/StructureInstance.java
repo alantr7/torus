@@ -422,7 +422,7 @@ public abstract class StructureInstance {
 
     static final ChatColor COLOR_STRUCTURE_NAME = ChatColor.of("#ff8854");
     static final ChatColor COLOR_PROPERTY = ChatColor.of("#cfcfcf");
-    public void updateInspectionHologram() {
+    public final void updateInspectionHologram() {
         if (isCorrupted)
             return;
 

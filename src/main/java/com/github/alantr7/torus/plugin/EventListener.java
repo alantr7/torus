@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.plugin;
 
-import com.github.alantr7.bukkitplugin.annotations.core.Invoke;
 import com.github.alantr7.bukkitplugin.annotations.core.Singleton;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.torus.TorusPlugin;
