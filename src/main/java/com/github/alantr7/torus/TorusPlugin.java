@@ -38,7 +38,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.io.File;
 import java.util.List;
 
-@JavaPlugin(name = "Torus", version = "0.7.0", apiVersion = "1.21")
+@JavaPlugin(name = "Torus", version = "0.6.2", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
 @SoftDepends({"ProtocolLib", "ModelEngine", "WorldGuard"})
 public class TorusPlugin extends BukkitPlugin {
