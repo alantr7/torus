@@ -19,6 +19,7 @@ public class Faucet extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "faucet", "Faucet", FaucetInstance.class);
         isTickable = false;
         isInteractable = true;
+        isHeavy = false;
     }
 
     @Override
