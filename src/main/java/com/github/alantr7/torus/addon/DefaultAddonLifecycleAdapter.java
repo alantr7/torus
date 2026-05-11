@@ -54,6 +54,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.FAUCET);
         registry.registerAndInitialize(Structures.LIGHT_BULB);
 
+        registry.registerAndInitialize(Structures.GENERATOR);
         registry.registerAndInitialize(Structures.COAL_GENERATOR);
         registry.registerAndInitialize(Structures.SOLAR_GENERATOR);
         registry.registerAndInitialize(Structures.WINDMILL);
@@ -69,6 +70,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
     @Override
     public void registerItems(ItemRegistry registry) {
         // Structure Items
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "generator", new Category[]{Category.GENERATORS}, Structures.GENERATOR, new HeadData("http://textures.minecraft.net/texture/7b6a3366d21618e244c1a8e49f32feae2924aeaf985c9d16b0b430ccb2a88ffa"), "Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "solar_generator", new Category[]{Category.GENERATORS}, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "coal_generator", new Category[]{Category.GENERATORS}, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill", new Category[]{Category.GENERATORS}, Structures.WINDMILL, Material.PAPER, "Windmill", Collections.emptyList()));
@@ -115,7 +117,6 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "transistor", new Category[]{Category.COMPONENTS}, null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "circuit_board", new Category[]{Category.COMPONENTS}, null, Material.PAPER, "Circuit Board", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "motor", new Category[]{Category.COMPONENTS}, null, new HeadData("http://textures.minecraft.net/texture/8cbca012f67e54de9aee72ff424e056c2ae58de5eacc949ab2bcd9683cec"), "Motor", Collections.emptyList()));
-        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "generator", new Category[]{Category.COMPONENTS}, null, new HeadData("http://textures.minecraft.net/texture/7b6a3366d21618e244c1a8e49f32feae2924aeaf985c9d16b0b430ccb2a88ffa"), "Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill_blade", new Category[]{Category.COMPONENTS}, null, Material.WHITE_BANNER, "Windmill Blade", Collections.emptyList()));
 
         Category.RESOURCES.display = registry.getItemById("torus:copper_dust").toItemStack();

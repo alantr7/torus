@@ -31,6 +31,7 @@ public class Structures {
     public static final Faucet FAUCET = new Faucet();
     public static final LightBulb LIGHT_BULB = new LightBulb();
 
+    public static final Generator GENERATOR = new Generator();
     public static final CoalGenerator COAL_GENERATOR = new CoalGenerator();
     public static final SolarGenerator SOLAR_GENERATOR = new SolarGenerator();
     public static final Windmill WINDMILL = new Windmill();
