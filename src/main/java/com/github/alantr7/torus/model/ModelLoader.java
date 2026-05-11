@@ -54,7 +54,9 @@ public class ModelLoader {
 
     public ModelTemplate load(File file, FileConfiguration yaml, Map<String, String> variables) {
         ModelTemplate template = new ModelTemplate(yaml.getInt("model_version", 1));
-        UpdateUtils_0_5_2.updateModelFileFormatFromV1ToV2(file, yaml);
+        if (file != null) {
+            UpdateUtils_0_5_2.updateModelFileFormatFromV1ToV2(file, yaml);
+        }
 
         for (String partName : yaml.getKeys(false)) {
             ConfigurationSection section = yaml.getConfigurationSection(partName);
