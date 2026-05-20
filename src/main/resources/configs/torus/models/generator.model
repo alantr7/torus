@@ -18,6 +18,3 @@ base:
     - item_display,light_gray_concrete,0,0.625,0.0625,0.6875,0.0625,0.875,0,0,0
     - item_display,light_gray_concrete,0,0.5,0.0625,0.6875,0.0625,0.875,0,0,0
     - item_display,light_gray_concrete,0,0.375,0.0625,0.6875,0.0625,0.875,0,0,0
-
-    # Shaft
-    - item_display,end_rod,0,0.5,0.1875,2,0.875,2,90,0,0

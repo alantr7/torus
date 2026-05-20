@@ -1,4 +1,6 @@
-type: SINGLEPART
+type: MULTIPART
 cases:
   fallback:
     model: "generator"
+  state[connected=false]:
+    model: "generator_shaft"

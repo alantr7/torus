@@ -40,8 +40,10 @@ public class GeneratorInstance extends StructureInstance implements EnergyContai
     public void tick(boolean isVirtual) {
         if (location.getRelative(direction.getOpposite()).getStructure() instanceof RotationSource source) {
             rpm.update(source.getRpm());
+            state.set(Generator.STATE_CONNECTED, true);
         } else {
             rpm.update(0);
+            state.set(Generator.STATE_CONNECTED, false);
         }
 
         if (rpm.get() != 0) {

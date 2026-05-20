@@ -1,0 +1,4 @@
+base:
+  renderer: DISPLAY_ENTITIES
+  elements:
+    - item_display,end_rod,0,0.5,0.1875,2,0.875,2,90,0,0
