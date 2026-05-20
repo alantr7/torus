@@ -21,7 +21,7 @@ public class SteamTurbine extends Structure {
 
     public SteamTurbine() {
         super(TorusPlugin.DEFAULT_ADDON, "steam_turbine", translatable("structure.steam_turbine.name"), SteamTurbineInstance.class);
-        setFlags(StructureFlag.COLLIDABLE);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE);
     }
 
     @Override
