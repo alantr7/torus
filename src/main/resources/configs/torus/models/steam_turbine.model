@@ -3,18 +3,31 @@ model_version: 2
 base:
   renderer: DISPLAY_ENTITIES
   elements:
-    - item_display,light_gray_concrete,0,0.5625,3.875,1.75,1.125,0.875,0,0,0
-    - item_display,light_gray_concrete,0,0.5,3,1.0625,1,1,0,0,0
+    - item_display,light_gray_concrete,0,0.5,0,0.625,0.625,0.75,0,0,0
+    - item_display,light_gray_concrete,0,0.5,1.125,0.75,0.75,1,0,0,0
     - item_display,light_gray_concrete,0,0.5625,2.25,1.75,1.125,0.875,0,0,0
     - item_display,light_gray_concrete,0,0.625,2.25,1.3125,1.25,0.875,0,0,0
+    - item_display,light_gray_concrete,0,0.5625,3.875,1.75,1.125,0.875,0,0,0
     - item_display,light_gray_concrete,0,0.625,3.875,1.25,1.25,0.875,0,0,0
-    - item_display,light_gray_concrete,0,0.5,1.125,0.75,0.75,1,0,0,0
-    - item_display,light_gray_concrete,0,0.5,0,0.625,0.625,0.75,0,0,0
-    - item_display,cyan_terracotta,0,0.5,1.125,0.375,0.375,1.9375,0,0,0
+    - item_display,light_gray_concrete,0,0.3125,0,0.4375,0.625,0.375,0,0,0
 
-    - item_display,cyan_terracotta,0,1.4375,1.125,0.4375,1.25,0.4375,0,0,0
-    - item_display,cyan_terracotta,0,1.4375,3.0625,0.4375,1.25,0.4375,0,0,0
-    - item_display,cyan_terracotta,0,2.0625,2.125,0.4375,0.4375,1.9375,0,0,0
+    # Polished tuffs
+    - item_display,polished_tuff,0,0.75,2.25,1.8125,0.25,0.6875,0,0,0
+    - item_display,polished_tuff,0,0.375,2.25,1.8125,0.25,0.6875,0,0,0
+    - item_display,polished_tuff,0,0.75,3.875,1.8125,0.25,0.6875,0,0,0
+    - item_display,polished_tuff,0,0.375,3.875,1.8125,0.25,0.6875,0,0,0
+
+    # Thing above
+    - item_display,cyan_terracotta,0,1.9375,2.09375,0.4375,0.4375,1.9375,0,0,0
+    - item_display,cyan_terracotta,0,1.25,3.0625,0.4375,1.25,0.4375,0,0,0
+    - item_display,cyan_terracotta,0,1.25,1.125,0.4375,1.25,0.4375,0,0,0
+
+    - item_display,cyan_terracotta,0,0.0625,0.625,0.875,0.125,2.125,0,0,0
+    - item_display,mud,0,0.5,2.6875,1,1,0.125,0,0,0
+    - item_display,mud,0,0.5,3.4375,1,1,0.125,0,0,0
+    - item_display,cyan_terracotta,0,0.5,3,0.875,0.875,1,0,0,0
+    - item_display,cyan_terracotta,0,0.5,3.9375,0.4375,0.4375,0.875,0,0,0
+    - item_display,gray_concrete,0,0.5,1.125,0.375,0.375,1.9375,0,0,0
 
     - item_display,end_rod,0,0.5,4.625,2,0.875,2,-90,0,-180
     - item_display,gray_concrete,0,0.5,-0.43754,0.5,0.5,0.125,0,0,0
