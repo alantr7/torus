@@ -150,19 +150,10 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
             else if (pressure >= 1.4f || isVenting.get() == (byte) 1) {
                 if (pressure >= 1.4f) isVenting.update((byte) 1);
                 if (location.getRelative(0, 3, 0).getStructure() instanceof PressureVentInstance vent) {
-                    int ventedSteam = (int) Math.max(25, pressure * steam.get() / 20);
-                    steam.update(steam.get() - ventedSteam);
+                    int steamToVent = (int) Math.max(25, pressure * steam.get() / 20);
+                    int ventedSteam = vent.vent(steamToVent);
 
-                    if (ventedSteam != 0) {
-                        for (int i = 0; i < 3; i++) {
-                            vent.location.world.getBukkit().spawnParticle(
-                                    Particle.CAMPFIRE_SIGNAL_SMOKE,
-                                    vent.location.toBukkitCentered().add(0, 0.85f, 0),
-                                    0,
-                                    0, 0.2, 0
-                            );
-                        }
-                    }
+                    steam.update(steam.get() - ventedSteam);
                 }
                 if (pressure <= 1.2f) isVenting.update((byte) 0);
             }
