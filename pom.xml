@@ -146,7 +146,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>/home/alan/Workspace/java/.out/${project.artifactId}-${project.version}.jar</outputFile>
+                            <outputFile>/home/alan/Workspace/java/Workspace - Minecraft Plugins/server/plugins/${project.artifactId}-${project.version}.jar</outputFile>
                             <relocations>
                                 <relocation>
                                     <pattern>com.github.alantr7.bukkitplugin</pattern>
