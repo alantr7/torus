@@ -53,6 +53,7 @@ public class PressureVentInstance extends StructureInstance implements FluidCont
 
         else if (hasPipes && hasWorked) {
             location.world.getBukkit().playSound(location.toBukkitCentered(), Sound.BLOCK_LAVA_EXTINGUISH, 0.5f, 1.5f);
+            hasWorked = false;
         }
     }
 
