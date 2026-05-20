@@ -58,6 +58,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.COAL_GENERATOR);
         registry.registerAndInitialize(Structures.SOLAR_GENERATOR);
         registry.registerAndInitialize(Structures.WINDMILL);
+        registry.registerAndInitialize(Structures.STEAM_TURBINE);
 
         for (String structureId : MainConfig.EXPERIMENTAL_VIRTUALIZATION_STRUCTURES) {
             Structure structure = registry.getStructure(structureId);
@@ -74,6 +75,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "solar_generator", new Category[]{Category.GENERATORS}, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "coal_generator", new Category[]{Category.GENERATORS}, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill", new Category[]{Category.GENERATORS}, Structures.WINDMILL, Material.PAPER, "Windmill", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "steam_turbine", new Category[]{Category.GENERATORS}, Structures.STEAM_TURBINE, Material.PAPER, "Steam Turbine", Collections.emptyList()));
 
         // Machines
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));

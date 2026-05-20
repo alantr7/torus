@@ -8,6 +8,7 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
 import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.socket.Socket;
+import com.github.alantr7.torus.utils.ByteArrayBuilder;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.Pitch;
@@ -16,19 +17,30 @@ import org.joml.Vector3f;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 
-public class Generator extends Structure {
+public class SteamTurbine extends Structure {
 
-    public Generator() {
-        super(TorusPlugin.DEFAULT_ADDON, "generator", translatable("structure.generator.name"), GeneratorInstance.class);
+    public SteamTurbine() {
+        super(TorusPlugin.DEFAULT_ADDON, "steam_turbine", translatable("structure.steam_turbine.name"), SteamTurbineInstance.class);
         setFlags(StructureFlag.COLLIDABLE);
     }
 
     @Override
+    protected void createBounds(ByteArrayBuilder builder) {
+        builder.add(0, 0, 0);
+        builder.add(0, 0, 1);
+        builder.add(0, 0, 2);
+        builder.add(0, 0, 3);
+        builder.add(0, 0, 4);
+    }
+
+    @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
-        return new GeneratorInstance(this, location, new StructureBodyDef(new StructurePartDef[]{
-          new StructurePartDef("base", new Vector3f(), new StructureSocketDef(
-            Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.getOpposite().mask()
-          ))
+        return new SteamTurbineInstance(location, new StructureBodyDef(new StructurePartDef[]{
+          new StructurePartDef("base", new Vector3f()),
+          new StructurePartDef("in_fluid", new Vector3f(0, 0, 0), new StructureSocketDef(
+            Socket.Medium.FLUID, Socket.FlowDirection.IN, direction.mask() | direction.getOpposite().mask()
+          )),
         }), direction);
     }
+
 }

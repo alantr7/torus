@@ -193,6 +193,8 @@ public class ModelLoader {
                     continue;
                 }
 
+                TorusLogger.info(Category.MODELS, "Loaded model: " + structure.id);
+
                 if (variables.isEmpty()) {
                     TorusPlugin.getInstance().getModelManager().cache(rawModel, template);
                 }

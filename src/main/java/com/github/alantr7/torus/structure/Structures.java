@@ -35,5 +35,6 @@ public class Structures {
     public static final CoalGenerator COAL_GENERATOR = new CoalGenerator();
     public static final SolarGenerator SOLAR_GENERATOR = new SolarGenerator();
     public static final Windmill WINDMILL = new Windmill();
+    public static final SteamTurbine STEAM_TURBINE = new SteamTurbine();
 
 }
