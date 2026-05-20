@@ -32,7 +32,6 @@ public class WindmillInstance extends StructureInstance implements EnergyContain
         super(Structures.WINDMILL, location, bodyDef, direction);
     }
 
-
     @Override
     public void tick(boolean isVirtual) {
         supplyEnergy((int) (efficiency * 75));

@@ -1,6 +1,7 @@
 package com.github.alantr7.torus.model.de_provider;
 
 import com.github.alantr7.torus.machine.OreCrusherInstance;
+import com.github.alantr7.torus.machine.SteamTurbineInstance;
 import com.github.alantr7.torus.machine.Windmill;
 import com.github.alantr7.torus.machine.WindmillInstance;
 import com.github.alantr7.torus.model.animation.Animation;
@@ -62,9 +63,27 @@ public class DisplayEntitiesDefaultAnimations {
         }
     };
 
+    public static final BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation> STEAM_TURBINE_SHAFT_ROT = (structure, part) -> new Animation() {
+        @Override
+        public void tick() {
+            part.entityReferences.forEach(ref -> {
+                Display display = ref.getEntity();
+                Transformation transformation = display.getTransformation();
+
+                Quaternionf rotation = new Quaternionf(transformation.getLeftRotation())
+                  .rotateXYZ(0f, (float) Math.toRadians(((SteamTurbineInstance) structure).shaftAngle), 0f);
+
+                display.setTransformation(new Transformation(transformation.getTranslation(), rotation, transformation.getScale(), transformation.getRightRotation()));
+                display.setInterpolationDelay(0);
+                display.setInterpolationDuration(20);
+            });
+        }
+    };
+
     private static final Map<String, Map<String, Map.Entry<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>>>> defaultAnimations = Map.of(
       Structures.ORE_CRUSHER.id, Map.of("wheel_left", new AbstractMap.SimpleEntry<>("wheel_left_spin", ORE_CRUSHER_WHEEL_LEFT_ROT), "wheel_right", new AbstractMap.SimpleEntry<>("wheel_right_spin", ORE_CRUSHER_WHEEL_RIGHT_ROT)),
-      Structures.WINDMILL.id, Map.of("blades", new AbstractMap.SimpleEntry<>("blades_spin", WINDMILL_BLADES_ROT))
+      Structures.WINDMILL.id, Map.of("blades", new AbstractMap.SimpleEntry<>("blades_spin", WINDMILL_BLADES_ROT)),
+      Structures.STEAM_TURBINE.id, Map.of("shaft", new AbstractMap.SimpleEntry<>("shaft_spin", STEAM_TURBINE_SHAFT_ROT))
     );
 
     public static void inject(StructureInstance instance) {

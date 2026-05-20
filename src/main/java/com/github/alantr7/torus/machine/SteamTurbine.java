@@ -46,6 +46,7 @@ public class SteamTurbine extends Structure {
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new SteamTurbineInstance(location, new StructureBodyDef(new StructurePartDef[]{
           new StructurePartDef("base", new Vector3f()),
+          new StructurePartDef("shaft", new Vector3f()),
           new StructurePartDef("in_fluid", new Vector3f(0, 0, 0), new StructureSocketDef(
             Socket.Medium.FLUID, Socket.FlowDirection.IN, direction.mask() | direction.getOpposite().mask()
           )),

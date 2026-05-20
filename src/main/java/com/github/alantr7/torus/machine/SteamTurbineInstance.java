@@ -25,6 +25,8 @@ public class SteamTurbineInstance extends StructureInstance implements Inspectab
 
     protected FluidSocket inSteam;
 
+    public float shaftAngle;
+
     public SteamTurbineInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.STEAM_TURBINE, location, bodyDef, direction);
     }
@@ -55,6 +57,7 @@ public class SteamTurbineInstance extends StructureInstance implements Inspectab
         }
 
         rpm.update((int) Math.max(0, rpm.get() + torque.get() - rpm.get() / 25f));
+        shaftAngle = rpm.get() / 900f * -180f;
     }
 
     @Override

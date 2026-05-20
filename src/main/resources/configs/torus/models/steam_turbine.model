@@ -28,6 +28,11 @@ base:
     - item_display,cyan_terracotta,0,0.5,3,0.875,0.875,1,0,0,0
     - item_display,cyan_terracotta,0,0.5,3.9375,0.4375,0.4375,0.875,0,0,0
     - item_display,gray_concrete,0,0.5,1.125,0.375,0.375,1.9375,0,0,0
-
-    - item_display,end_rod,0,0.5,4.625,2,0.875,2,-90,0,-180
     - item_display,gray_concrete,0,0.5,-0.43754,0.5,0.5,0.125,0,0,0
+
+shaft:
+  renderer: DISPLAY_ENTITIES
+  animation_map:
+    working: shaft_spin
+  elements:
+    - item_display,end_rod,0,0.5,4.625,2,0.875,2,-90,0,-180

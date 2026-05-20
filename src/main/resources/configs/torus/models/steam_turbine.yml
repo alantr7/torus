@@ -2,3 +2,4 @@ type: SINGLEPART
 cases:
   fallback:
     model: "steam_turbine"
+    animations: "working"
