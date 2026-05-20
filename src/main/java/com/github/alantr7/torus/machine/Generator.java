@@ -28,7 +28,7 @@ public class Generator extends Structure {
         return new GeneratorInstance(this, location, new StructureBodyDef(new StructurePartDef[]{
           new StructurePartDef("base", new Vector3f()),
           new StructurePartDef("out_energy", new Vector3f(), new StructureSocketDef(
-            Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.getOpposite().mask()
+            Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.mask()
           ))
         }), direction);
     }

@@ -12,6 +12,8 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public class GeneratorInstance extends StructureInstance implements EnergyContainer {
 
     @Getter
@@ -36,7 +38,7 @@ public class GeneratorInstance extends StructureInstance implements EnergyContai
 
     @Override
     public void tick(boolean isVirtual) {
-        if (location.getRelative(direction).getStructure() instanceof RotationSource source) {
+        if (location.getRelative(direction.getOpposite()).getStructure() instanceof RotationSource source) {
             rpm.update(source.getRpm());
         } else {
             rpm.update(0);
@@ -63,8 +65,8 @@ public class GeneratorInstance extends StructureInstance implements EnergyContai
     @Override
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
-          .property("inspection.rpm", () -> getRpm() + "")
-          .property("inspection.rf", InspectableDataContainer.TEMPLATE_RF.apply(this));
+          .property(translate("inspection.rpm"), () -> getRpm() + "")
+          .property(translate("inspection.energy_unit"), InspectableDataContainer.TEMPLATE_RF.apply(this));
     }
 
 }
