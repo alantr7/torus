@@ -41,7 +41,7 @@ import java.util.List;
 
 @JavaPlugin(name = "Torus", version = "0.6.3", apiVersion = "1.21")
 @Relocations(@Relocate(from = "com.github.alantr7.bukkitplugin", to = "com.github.alantr7.torus.bpf"))
-@SoftDepends({"ProtocolLib", "ModelEngine", "WorldGuard", "GriefPrevention", "Lands"})
+@SoftDepends({"ProtocolLib", "ModelEngine", "WorldGuard", "GriefPrevention", "Lands", "Residence"})
 public class TorusPlugin extends BukkitPlugin {
 
     @Getter
