@@ -3,24 +3,23 @@ model_version: 2
 base:
   renderer: DISPLAY_ENTITIES
   elements:
-    - item_display,gray_concrete_powder,0,0.0625,0,1,0.125,1,0,0,0
-    - item_display,light_gray_concrete,0,0.75,0,0.625,1.5,0.625,0,0,0
-    - item_display,light_gray_concrete,0,2.0625,0,0.4375,1.5,0.4375,0,0,0
-    - item_display,light_gray_concrete,0,3.3125,0,0.3125,1.8125,0.3125,0,0,0
-    - item_display,dispenser,0,3.75,0,0.6875,0.6875,0.875,180,0,0
-    - item_display,end_rod,0,3.75,-0.5,1,1,1,90,0,0
+    - item_display,quartz_block,0,0.5,-0.1,0.5,0.5,0.6,0,0,0
 
 blades:
   renderer: DISPLAY_ENTITIES
   animation_map:
     active: blades_spin
   elements:
-    - item_display,iron_block,0,3.75,-0.6875,1.875,0.375,0.25,0,0,0
-    - item_display,iron_block,0,3.75,-0.6875,4.6875,0.1875,0.1875,0,0,0
-    - item_display,iron_block,0,3.75,-0.75,0.375,1.875,0.25,0,0,0
-    - item_display,iron_block,0,3.75,-0.75,0.1875,4.6875,0.125,0,0,0
+    - block_display,white_banner,0,0.5,0.25,0.825,1.5,1,0,180,0
+    - block_display,white_banner,0,0.5,0.25,0.825,1.5,1,0,180,60
+    - block_display,white_banner,0,0.5,0.25,0.825,1.5,1,0,180,120
+    - block_display,white_banner,0,0.5,0.25,0.825,1.5,1,0,180,180
+    - block_display,white_banner,0,0.5,0.25,0.825,1.5,1,0,180,240
+    - block_display,white_banner,0,0.5,0.25,0.825,1.5,1,0,180,300
 
-connector:
+shaft:
   renderer: DISPLAY_ENTITIES
+  animation_map:
+    active: shaft_spin
   elements:
-    - item_display,gray_concrete,0,0.5,-0.4375,0.625,0.625,0.125,0,0,0
+    - item_display,end_rod,0,0.5,0.4,1.93,1.475,1.93,90,0,0

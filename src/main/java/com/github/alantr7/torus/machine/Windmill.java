@@ -31,28 +31,18 @@ public class Windmill extends Structure {
         super(TorusPlugin.DEFAULT_ADDON, "windmill", translatable("structure.windmill.name"), WindmillInstance.class);
         setFlags(StructureFlag.COLLIDABLE | StructureFlag.TICKABLE | StructureFlag.HEAVY);
         setPortableData("energy");
-        setHologramOffset(new Vector3f(0, 1f, 0));
         registerState(STATE_ACTIVE);
-        registerProperty(new Property<>("energy_settings.production", PropertyType.INT, 3000));
-        registerProperty(new Property<>("energy_settings.capacity", PropertyType.INT, 75));
-        registerProperty(new Property<>("energy_settings.maximum_output", PropertyType.INT, 100));
     }
 
     @Override
     protected void createBounds(ByteArrayBuilder builder) {
         builder.add(0, 0, 0);
-        builder.add(0, 1, 0);
-        builder.add(0, 2, 0);
-        builder.add(0, 3, 0);
     }
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new WindmillInstance(location, new StructureBodyDef(new StructurePartDef[]{
-          new StructurePartDef("base", new Vector3f()),
-          new StructurePartDef("out_energy", new Vector3f(), new StructureSocketDef(
-            Socket.Medium.ENERGY, Socket.FlowDirection.OUT, direction.mask()
-          ))
+          new StructurePartDef("base", new Vector3f())
         }), direction);
     }
 

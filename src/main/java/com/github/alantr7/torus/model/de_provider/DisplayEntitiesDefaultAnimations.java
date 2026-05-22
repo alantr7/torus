@@ -26,14 +26,33 @@ public class DisplayEntitiesDefaultAnimations {
                 Display entity = ref.getEntity();
                 Transformation transform = entity.getTransformation();
 
-                Quaternionf rotation = transform.getLeftRotation();
-                rotation.setAngleAxis(angle, 0, 0, 1);
+                Quaternionf rotation = new Quaternionf(transform.getLeftRotation())
+                  .rotateXYZ(0f, 0f, -angle);
 
-                entity.setTransformation(transform);
+                entity.setTransformation(new Transformation(transform.getTranslation(), rotation, transform.getScale(), transform.getRightRotation()));
                 entity.setInterpolationDelay(0);
                 entity.setInterpolationDuration(20);
             });
-            angle += Windmill.MAXIMUM_SPEED * ((WindmillInstance) structure).getEfficiency();
+            angle = Windmill.MAXIMUM_SPEED * ((WindmillInstance) structure).getEfficiency();
+        }
+    };
+
+    public static final BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation> WINDMILL_SHAFT_ROT = (structure, part) -> new Animation() {
+        float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getEfficiency();
+        @Override
+        public void tick() {
+            part.entityReferences.forEach(ref -> {
+                Display entity = ref.getEntity();
+                Transformation transform = entity.getTransformation();
+
+                Quaternionf rotation = new Quaternionf(transform.getLeftRotation())
+                  .rotateXYZ(0f, angle, 0f);
+
+                entity.setTransformation(new Transformation(transform.getTranslation(), rotation, transform.getScale(), transform.getRightRotation()));
+                entity.setInterpolationDelay(0);
+                entity.setInterpolationDuration(20);
+            });
+            angle = Windmill.MAXIMUM_SPEED * ((WindmillInstance) structure).getEfficiency();
         }
     };
 
@@ -82,7 +101,7 @@ public class DisplayEntitiesDefaultAnimations {
 
     private static final Map<String, Map<String, Map.Entry<String, BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation>>>> defaultAnimations = Map.of(
       Structures.ORE_CRUSHER.id, Map.of("wheel_left", new AbstractMap.SimpleEntry<>("wheel_left_spin", ORE_CRUSHER_WHEEL_LEFT_ROT), "wheel_right", new AbstractMap.SimpleEntry<>("wheel_right_spin", ORE_CRUSHER_WHEEL_RIGHT_ROT)),
-      Structures.WINDMILL.id, Map.of("blades", new AbstractMap.SimpleEntry<>("blades_spin", WINDMILL_BLADES_ROT)),
+      Structures.WINDMILL.id, Map.of("blades", new AbstractMap.SimpleEntry<>("blades_spin", WINDMILL_BLADES_ROT), "shaft", new AbstractMap.SimpleEntry("shaft_spin", WINDMILL_SHAFT_ROT)),
       Structures.STEAM_TURBINE.id, Map.of("shaft", new AbstractMap.SimpleEntry<>("shaft_spin", STEAM_TURBINE_SHAFT_ROT))
     );
 
