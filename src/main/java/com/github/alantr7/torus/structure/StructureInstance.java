@@ -326,6 +326,7 @@ public abstract class StructureInstance {
         inspectionHologram.setAlignment(TextDisplay.TextAlignment.LEFT);
         inspectionHologram.setVisibleByDefault(false);
         inspectionHologram.setShadowed(true);
+        inspectionHologram.setBrightness(new Display.Brightness(15, 15));
 
         Transformation transformation = inspectionHologram.getTransformation();
         transformation.getScale().set(0.4f, 0.4f, 0.4f);
