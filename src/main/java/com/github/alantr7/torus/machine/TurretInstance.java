@@ -25,6 +25,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
+import org.bukkit.util.Vector;
 
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -81,6 +82,10 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
             Location diff = target.getLocation().add(target.getVelocity()).subtract(location.toBukkit().add(.5, 0, .5));
             diff.setY(0);
+
+            Vector knockback = diff.toVector().normalize().multiply(0.4f);
+            knockback.setY(0.1f);
+
             Location laserPosition = diff.clone().multiply(.5).add(location.toBukkit().add(.5, 0, .5));
             laserPosition.setY(location.y + 1.375f);
             ItemDisplay laser = (ItemDisplay) location.world.getBukkit().spawnEntity(laserPosition, EntityType.ITEM_DISPLAY);
@@ -100,6 +105,7 @@ public class TurretInstance extends StructureInstance implements EnergyContainer
 
             Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
                 target.damage(8f);
+                target.setVelocity(knockback);
                 laser.remove();
             }, 3L);
 
