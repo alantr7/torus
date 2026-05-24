@@ -43,7 +43,7 @@ public class SteamTurbineInstance extends StructureInstance implements Inspectab
 
     @Override
     public void tick(boolean isVirtual) {
-        int consumed = inSteam.consumeFluid(Fluid.WATER, 1000);
+        int consumed = inSteam.consumeFluid(Fluid.STEAM, 1000);
         if (consumed == 0) {
             torque.update(torque.get() * 0.25f);
         } else {

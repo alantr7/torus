@@ -69,7 +69,7 @@ public class PressureVentInstance extends StructureInstance implements FluidCont
 
     @Override
     public @Nullable Fluid getFluid() {
-        return Fluid.WATER;
+        return Fluid.STEAM;
     }
 
     @Override

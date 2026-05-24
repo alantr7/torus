@@ -45,6 +45,8 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
 
     private static final float GAS_FACTOR = 100f;
 
+    private static final Fluid[] ALLOWED_FLUIDS = { Fluid.WATER, Fluid.LAVA };
+
     FluidTankInstance(LoadContext context) {
         super(context);
     }
@@ -95,7 +97,7 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
         if (stored.get() < getFluidCapacity()) {
             Fluid fluid = getFluid();
             if (fluid == null) {
-                for (Fluid fluid1 : Fluid.values()) {
+                for (Fluid fluid1 : ALLOWED_FLUIDS) {
                     int consumed = input.consumeFluid(fluid1, 1000);
                     if (consumed != 0) {
                         supplyFluid(consumed);
