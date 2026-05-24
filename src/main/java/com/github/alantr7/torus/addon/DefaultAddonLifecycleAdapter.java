@@ -11,6 +11,7 @@ import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.structure.Structures;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Collections;
+import java.util.List;
 
 public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
 
@@ -73,7 +75,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         // Structure Items
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "generator", new Category[]{Category.GENERATORS}, Structures.GENERATOR, new HeadData("http://textures.minecraft.net/texture/7b6a3366d21618e244c1a8e49f32feae2924aeaf985c9d16b0b430ccb2a88ffa"), "Generator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "solar_generator", new Category[]{Category.GENERATORS}, Structures.SOLAR_GENERATOR, Material.PAPER, "Solar Generator", Collections.emptyList()));
-        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "coal_generator", new Category[]{Category.GENERATORS}, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "coal_generator", new Category[]{Category.GENERATORS}, Structures.COAL_GENERATOR, Material.PAPER, "Coal Generator [Legacy]", List.of(ChatColor.RED + "It will be removed soon!", ChatColor.RED + "Build a thermal plant instead.")));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill", new Category[]{Category.GENERATORS}, Structures.WINDMILL, Material.PAPER, "Windmill", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "steam_turbine", new Category[]{Category.GENERATORS}, Structures.STEAM_TURBINE, Material.PAPER, "Steam Turbine", Collections.emptyList()));
 
