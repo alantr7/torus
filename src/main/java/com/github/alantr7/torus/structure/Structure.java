@@ -256,6 +256,10 @@ public abstract class Structure {
     }
 
     public StructureInstance place(BlockLocation location, Direction direction, Pitch pitch) {
+        if (numericId < 0) {
+            throw new RuntimeException("Structure " + id + " is not registered and therefore cannot be placed.");
+        }
+
         byte[] offset = calculateOffset(direction.getOpposite());
         location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction, pitch);

@@ -197,6 +197,11 @@ public class TorusWorld {
     }
 
     public void placeStructure(@NotNull StructureInstance instance) {
+        // Check if structure is registered before placing it to prevent world corruption
+        if (instance.structure.numericId < 0) {
+            throw new RuntimeException("Structure " + instance.structure.id + " is not registered and therefore cannot be placed.");
+        }
+
         TorusChunk chunk = getChunkOrLoad(instance.location);
         chunk._registerStructure(instance);
         chunk.isUnsaved = true;
