@@ -15,6 +15,7 @@ import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import lombok.Getter;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -71,6 +72,9 @@ public class OreCrusherInstance extends StructureInstance implements Inspectable
                     return;
                 }
 
+                if (processedTicks % 2 == 0) {
+                    location.world.getBukkit().playSound(location.toBukkitCentered(), Sound.ENTITY_MINECART_RIDING, 0.3f, 0.4f);
+                }
                 processedTicks++;
                 wheelsAngle += (120) / 180f * (float) Math.PI;
                 state.set(STATE_WORKING, true);
