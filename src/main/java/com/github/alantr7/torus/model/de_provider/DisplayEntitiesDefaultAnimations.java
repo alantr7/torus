@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 public class DisplayEntitiesDefaultAnimations {
 
     public static final BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation> WINDMILL_BLADES_ROT = (structure, part) -> new Animation() {
-        float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getEfficiency();
+        float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getHeightEfficiency();
         @Override
         public void tick() {
             part.entityReferences.forEach(ref -> {
@@ -38,7 +38,7 @@ public class DisplayEntitiesDefaultAnimations {
     };
 
     public static final BiFunction<StructureInstance, DisplayEntitiesPartModel, Animation> WINDMILL_SHAFT_ROT = (structure, part) -> new Animation() {
-        float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getEfficiency();
+        float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getHeightEfficiency();
         @Override
         public void tick() {
             part.entityReferences.forEach(ref -> {

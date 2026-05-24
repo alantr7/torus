@@ -3,9 +3,7 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
-import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
@@ -14,6 +12,9 @@ import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
 
 public class WindmillInstance extends StructureInstance implements RotationSource, Inspectable {
+
+    @Getter
+    float heightEfficiency;
 
     @Getter
     float efficiency;
@@ -28,12 +29,16 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
 
     @Override
     public void tick(boolean isVirtual) {
+        efficiency = heightEfficiency;
+        if (!location.world.getBukkit().isClearWeather()) {
+            efficiency = Math.min(1f, 1.2f * efficiency);
+        }
     }
 
     @Override
     protected void setup() throws SetupException {
-        efficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
-        state.set(STATE_ACTIVE, efficiency != 0, false);
+        heightEfficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
+        state.set(STATE_ACTIVE, heightEfficiency != 0, false);
     }
 
     @Override
