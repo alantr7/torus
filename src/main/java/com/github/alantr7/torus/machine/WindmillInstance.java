@@ -27,6 +27,7 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
 
     public WindmillInstance(BlockLocation location, StructureBodyDef bodyDef, Direction direction) {
         super(Structures.WINDMILL, location, bodyDef, direction);
+        dataContainer.persist("_version.cv", Data.Type.INT, 2);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
             for (int i = 1; i <= 3; i++) {
                 location.getRelative(0, i, 0).toBukkit().getBlock().setType(Material.AIR);
             }
-            dataContainer.persist("_version.cv", Data.Type.INT, 0).update(1);
+            dataContainer.persist("_version.cv", Data.Type.INT, 0).update(2);
         }
     }
 
