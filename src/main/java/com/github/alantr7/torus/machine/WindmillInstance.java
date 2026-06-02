@@ -6,10 +6,12 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
+import com.github.alantr7.torus.world.Cuboid;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
@@ -26,6 +28,15 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
 
     protected Data<Byte> isObstructed = dataContainer.persist("obstructed", Data.Type.BYTE, (byte) 1);
 
+    protected final Cuboid damageCuboid;
+    {
+        Direction right = direction.getRight();
+        damageCuboid = new Cuboid(
+          location.getRelative(right.modX * -2, -2, right.modZ * -2),
+          location.getRelative(right.modX * 2, 2, right.modZ * 2)
+        );
+    }
+
     private int ticks = 0;
 
     WindmillInstance(LoadContext context) {
@@ -40,14 +51,24 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
     @Override
     public void tick(boolean isVirtual) {
         // check if obstructed
-        if (!isVirtual && ticks++ % 4 == 0) {
+        if (!isVirtual && ticks % 4 == 0) {
             isObstructed.update(isObstructed() ? (byte) 1: 0);
+        }
+
+        // hurt entities
+        if (!isVirtual && isObstructed.get() == 0) {
+            for (LivingEntity entity : location.toBukkit().getNearbyLivingEntities(2, 2, 2)) {
+                if (damageCuboid.contains(entity.getLocation()) || damageCuboid.contains(entity.getEyeLocation())) {
+                    entity.damage(2d);
+                }
+            }
         }
 
         efficiency = isObstructed.get() == 1 ? 0 : heightEfficiency;
         if (isObstructed.get() == 0 && !location.world.getBukkit().isClearWeather()) {
             efficiency = Math.min(1f, 1.2f * efficiency);
         }
+        ticks++;
     }
 
     @Override
