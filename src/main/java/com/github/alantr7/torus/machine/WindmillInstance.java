@@ -3,10 +3,12 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
+import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
+import org.bukkit.Material;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
@@ -45,6 +47,17 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 1)
           .property(translatable("inspection.windmill.efficiency"), () -> (int) (efficiency * 100) + "%");
+    }
+
+    @Override
+    public void onModelSpawn() {
+        // temporary solution for removing old barriers
+        if (dataContainer.getOrDefault("_version.cv", Data.Type.INT, 1) == 1) {
+            for (int i = 1; i <= 3; i++) {
+                location.getRelative(0, i, 0).toBukkit().getBlock().setType(Material.AIR);
+            }
+            dataContainer.persist("_version.cv", Data.Type.INT, 0).update(1);
+        }
     }
 
     @Override

@@ -81,6 +81,17 @@ public class TorusChunk {
         return location.x >> 4 == position.x && location.z >> 4 == position.y;
     }
 
+    public StructureInstance getStructure(BlockLocation location) {
+        BlockLocation machineLocation = occupations.get(location);
+        if (machineLocation == null)
+            return null;
+
+        if (machineLocation.x >> 4 == location.x >> 4 && machineLocation.z >> 4 == location.z >> 4)
+            return structures.get(machineLocation);
+
+        return null;
+    }
+
     public Collection<StructureInstance> getStructures() {
         return structures.values();
     }
