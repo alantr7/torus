@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
+import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
 
 public class WindmillInstance extends StructureInstance implements RotationSource, Inspectable {
@@ -39,7 +40,7 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
     @Override
     public void tick(boolean isVirtual) {
         // check if obstructed
-        if (!isVirtual && ticks % 4 == 0) {
+        if (!isVirtual && ticks++ % 4 == 0) {
             isObstructed.update(isObstructed() ? (byte) 1: 0);
         }
 
@@ -57,7 +58,8 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
 
     @Override
     public InspectableDataContainer setupInspectableData() {
-        return new InspectableDataContainer((byte) 1)
+        return new InspectableDataContainer((byte) 2)
+          .line(() -> isObstructed.get() == 1 ? translate("inspection.windmill.obstructed") : null)
           .property(translatable("inspection.windmill.efficiency"), () -> (int) (efficiency * 100) + "%");
     }
 
