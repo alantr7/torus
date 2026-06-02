@@ -48,8 +48,8 @@ public class StructureRegistry {
         try {
             ByteArrayReader reader = new ByteArrayReader(Files.readAllBytes(file.toPath()));
             while (reader.hasNext()) {
-                int numericId = ByteArrayReader.toInt(reader.readBytes(2));
-                String id = reader.readString();
+                int numericId = reader.readU2();
+                String id = reader.readShortString();
 
                 structuresIds.put(changedIds.getOrDefault(id, id), numericId);
                 if (numericId >= nextStructureId) {
@@ -78,7 +78,7 @@ public class StructureRegistry {
 
             for (Structure str : saveQuery) {
                 writer.writeU2(str.numericId);
-                writer.writeString(str.namespacedId);
+                writer.writeShortString(str.namespacedId);
             }
 
             saveQuery.clear();
