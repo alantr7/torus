@@ -22,17 +22,19 @@ public class DisplayEntitiesDefaultAnimations {
         float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getHeightEfficiency();
         @Override
         public void tick() {
-            part.entityReferences.forEach(ref -> {
-                Display entity = ref.getEntity();
-                Transformation transform = entity.getTransformation();
+            if (angle != 0) {
+                part.entityReferences.forEach(ref -> {
+                    Display entity = ref.getEntity();
+                    Transformation transform = entity.getTransformation();
 
-                Quaternionf rotation = new Quaternionf(transform.getLeftRotation())
-                  .rotateXYZ(0f, 0f, -angle);
+                    Quaternionf rotation = new Quaternionf(transform.getLeftRotation())
+                      .rotateXYZ(0f, 0f, -angle);
 
-                entity.setTransformation(new Transformation(transform.getTranslation(), rotation, transform.getScale(), transform.getRightRotation()));
-                entity.setInterpolationDelay(0);
-                entity.setInterpolationDuration(20);
-            });
+                    entity.setTransformation(new Transformation(transform.getTranslation(), rotation, transform.getScale(), transform.getRightRotation()));
+                    entity.setInterpolationDelay(0);
+                    entity.setInterpolationDuration(20);
+                });
+            }
             angle = Windmill.MAXIMUM_SPEED * ((WindmillInstance) structure).getEfficiency();
         }
     };
@@ -41,17 +43,19 @@ public class DisplayEntitiesDefaultAnimations {
         float angle = (float) (Math.random() * Math.PI / 2f) * ((WindmillInstance) structure).getHeightEfficiency();
         @Override
         public void tick() {
-            part.entityReferences.forEach(ref -> {
-                Display entity = ref.getEntity();
-                Transformation transform = entity.getTransformation();
+            if (angle != 0) {
+                part.entityReferences.forEach(ref -> {
+                    Display entity = ref.getEntity();
+                    Transformation transform = entity.getTransformation();
 
-                Quaternionf rotation = new Quaternionf(transform.getLeftRotation())
-                  .rotateXYZ(0f, angle, 0f);
+                    Quaternionf rotation = new Quaternionf(transform.getLeftRotation())
+                      .rotateXYZ(0f, angle, 0f);
 
-                entity.setTransformation(new Transformation(transform.getTranslation(), rotation, transform.getScale(), transform.getRightRotation()));
-                entity.setInterpolationDelay(0);
-                entity.setInterpolationDuration(20);
-            });
+                    entity.setTransformation(new Transformation(transform.getTranslation(), rotation, transform.getScale(), transform.getRightRotation()));
+                    entity.setInterpolationDelay(0);
+                    entity.setInterpolationDuration(20);
+                });
+            }
             angle = Windmill.MAXIMUM_SPEED * ((WindmillInstance) structure).getEfficiency();
         }
     };

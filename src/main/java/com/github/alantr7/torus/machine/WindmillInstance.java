@@ -8,7 +8,9 @@ import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
@@ -21,6 +23,10 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
     @Getter
     float efficiency;
 
+    protected Data<Byte> isObstructed = dataContainer.persist("obstructed", Data.Type.BYTE, (byte) 1);
+
+    private int ticks = 0;
+
     WindmillInstance(LoadContext context) {
         super(context);
     }
@@ -32,8 +38,13 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
 
     @Override
     public void tick(boolean isVirtual) {
-        efficiency = heightEfficiency;
-        if (!location.world.getBukkit().isClearWeather()) {
+        // check if obstructed
+        if (!isVirtual && ticks % 4 == 0) {
+            isObstructed.update(isObstructed() ? (byte) 1: 0);
+        }
+
+        efficiency = isObstructed.get() == 1 ? 0 : heightEfficiency;
+        if (isObstructed.get() == 0 && !location.world.getBukkit().isClearWeather()) {
             efficiency = Math.min(1f, 1.2f * efficiency);
         }
     }
@@ -59,6 +70,25 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
             }
             dataContainer.persist("_version.cv", Data.Type.INT, 0).update(2);
         }
+    }
+
+    static int radius2 = 3 * 3;
+    protected boolean isObstructed() {
+        Direction right = direction.getRight();
+        for (int x = -2; x <= 2; x++) {
+            for (int z = -2; z <= 2; z++) {
+                if (x == 0 && z == 0)
+                    continue;
+
+                if (x*x + z*z <= radius2) {
+                    BlockLocation relative = location.getRelative(z * right.modX, x, z * right.modZ);
+                    if (!relative.getBlock().getType().isAir()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
