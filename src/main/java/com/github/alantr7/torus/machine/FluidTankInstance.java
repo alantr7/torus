@@ -138,8 +138,12 @@ public class FluidTankInstance extends StructureInstance implements FluidContain
             }
 
             // condensation
-            int condensed = supplyFluid((int) ((this.steam.get() >= 25 ? 25 : this.steam.get()) / GAS_FACTOR));
-            this.steam.update(steam.get() - (int) (condensed * GAS_FACTOR));
+            if (steam.get() < 100) {
+                this.steam.update(0);
+            } else {
+                int condensed = supplyFluid((int) ((this.steam.get() >= 200 ? 200 : this.steam.get()) / GAS_FACTOR));
+                this.steam.update(steam.get() - (int) (condensed * GAS_FACTOR));
+            }
 
             // explode if pressure is too high
             float pressure = calculatePressure();
