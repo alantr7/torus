@@ -40,6 +40,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.ENERGY_CABLE);
         registry.registerAndInitialize(Structures.ITEM_CABLE);
         registry.registerAndInitialize(Structures.FLUID_CABLE);
+        registry.registerAndInitialize(Structures.DATA_CABLE);
 
         registry.registerAndInitialize(Structures.POWER_POLE);
         registry.registerAndInitialize(Structures.CONNECTOR);
@@ -91,6 +92,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "energy_cable", new Category[]{Category.NETWORK}, Structures.ENERGY_CABLE, Material.PAPER, "Energy Cable", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "fluid_pipe", new Category[]{Category.NETWORK}, Structures.FLUID_CABLE, Material.PAPER, "Fluid Pipe", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "item_conduit", new Category[]{Category.NETWORK}, Structures.ITEM_CABLE, Material.PAPER, "Item Conduit", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "data_cable", new Category[]{Category.NETWORK}, Structures.DATA_CABLE, Material.PAPER, "Data Cable", Collections.emptyList()));
 
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "power_pole", new Category[]{Category.NETWORK}, Structures.POWER_POLE, Material.SPRUCE_FENCE, "Power Pole", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "connector", new Category[]{Category.NETWORK}, Structures.CONNECTOR, Material.HEAVY_CORE, "Connector", Collections.emptyList()));

@@ -1,0 +1,30 @@
+type: MULTIPART
+cases:
+  fallback:
+    model: "generic_cable_not_connected"
+    variables:
+      material: white_concrete
+  state[north=true]:
+    model: "generic_cable_north"
+    variables:
+      material: white_concrete
+  state[east=true]:
+    model: "generic_cable_east"
+    variables:
+      material: white_concrete
+  state[south=true]:
+    model: "generic_cable_south"
+    variables:
+      material: white_concrete
+  state[west=true]:
+    model: "generic_cable_west"
+    variables:
+      material: white_concrete
+  state[up=true]:
+    model: "generic_cable_up"
+    variables:
+      material: white_concrete
+  state[down=true]:
+    model: "generic_cable_down"
+    variables:
+      material: white_concrete

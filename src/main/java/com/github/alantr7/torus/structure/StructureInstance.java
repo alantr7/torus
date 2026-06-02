@@ -148,7 +148,8 @@ public abstract class StructureInstance {
         Socket socket = switch (medium) {
             case ENERGY -> new EnergySocket(part, allowedConnections, direction);
             case ITEM -> new ItemSocket(part, allowedConnections, direction);
-            case FLUID -> new FluidSocket(part, allowedConnections,direction);
+            case FLUID -> new FluidSocket(part, allowedConnections, direction);
+            case DATA -> new DataSocket(part, allowedConnections, direction);
         };
         socket.structure = this;
         for (Direction possibleDirection : Direction.values()) {
@@ -628,6 +629,7 @@ public abstract class StructureInstance {
                     case ENERGY -> new EnergySocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
                     case ITEM -> new ItemSocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
                     case FLUID -> new FluidSocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
+                    case DATA -> new DataSocket(component, allowedConnections, Socket.FlowDirection.values()[flowDirection]);
                 };
                 socket.setConnections(connections);
 

@@ -38,7 +38,7 @@ public abstract class Socket {
     }
 
     public enum Medium {
-        ITEM, ENERGY, FLUID;
+        ITEM, ENERGY, FLUID, DATA;
     }
 
     @Getter

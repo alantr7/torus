@@ -41,7 +41,7 @@ public class CableInstance extends StructureInstance implements Conductor {
     }
 
     public CableInstance(BlockLocation location, StructureBodyDef bodyDef, Socket.Medium type) {
-        super(type == Socket.Medium.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Medium.ITEM ? Structures.ITEM_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
+        super(type == Socket.Medium.ENERGY ? Structures.ENERGY_CABLE : type == Socket.Medium.ITEM ? Structures.ITEM_CABLE : type == Socket.Medium.DATA ? Structures.DATA_CABLE : Structures.FLUID_CABLE, location, bodyDef, Direction.NORTH);
         this.type.update(type.ordinal());
     }
 
@@ -56,6 +56,7 @@ public class CableInstance extends StructureInstance implements Conductor {
                 case ENERGY -> new EnergySocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
                 case ITEM -> new ItemSocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
                 case FLUID -> new FluidSocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
+                case DATA -> new DataSocket(getPart("base"), 0b111111, Socket.FlowDirection.ALL);
             };
             socket.structure = this;
             socket.setConnections(dataContainer.getOrDefault("connections", Data.Type.INT, 0));
