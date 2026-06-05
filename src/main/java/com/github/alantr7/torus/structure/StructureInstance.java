@@ -29,6 +29,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Interaction;
@@ -172,6 +173,9 @@ public abstract class StructureInstance {
 
         status = Status.PHYSICAL;
 
+        // Delete extra barriers and place missing barriers
+        validateCollision();
+
         // Setup model
         try {
             if (!structure.hasFlag(StructureFlag.COLLIDABLE)) {
@@ -213,6 +217,59 @@ public abstract class StructureInstance {
         }
 
         model = new Model(ModelTemplate.EMPTY);
+    }
+
+    private static final int MAXIMUM_STRUCTURE_HALF_WIDTH = 8;
+    private void validateCollision() {
+        // TODO: Optimize, there's no need to perform this on every load, maybe use versioning
+        //       for collisions, and have versions per chunk saved to data container
+
+        int fromChunkX = (location.x - MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+        int fromChunkZ = (location.z - MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+        int toChunkX = (location.x + MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+        int toChunkZ = (location.z + MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+
+        Set<BlockLocation> vectors = new HashSet<>();
+        byte[] vectorsBytes = getCollisionVectors();
+
+        byte modified = 0;
+
+        // Load vectors and place missing barriers
+        for (int i = 0; i < vectorsBytes.length; i += 3) {
+            BlockLocation vector = location.getRelative(vectorsBytes[i], vectorsBytes[i+1], vectorsBytes[i+2]);
+            vectors.add(vector);
+
+            TorusChunk chunk = location.world.getChunk(vector);
+            if (chunk != null && chunk.status == Status.PHYSICAL) {
+                if (!location.equals(chunk.getOccupationOwner(vector))) {
+                    vector.getBlock().setType(Material.BARRIER);
+                    chunk.occupy(vector, location);
+                    modified++;
+                }
+            }
+        }
+
+        // Remove remaining barriers
+        for (int chunkX = fromChunkX; chunkX <= toChunkX; chunkX++) {
+            for (int chunkZ = fromChunkZ; chunkZ <= toChunkZ; chunkZ++) {
+                TorusChunk chunk = location.world.getChunkAt(chunkX, chunkZ);
+                if (chunk == null || chunk.status != Status.PHYSICAL)
+                    continue;
+
+                for (BlockLocation occupation : chunk.getOccupationsBy(this)) {
+                    if (!vectors.contains(occupation)) {
+                        occupation.getBlock().setType(Material.AIR);
+                        vectors.remove(occupation);
+                        chunk.deoccupy(occupation);
+                        modified++;
+                    }
+                }
+            }
+        }
+
+        if (modified != 0) {
+            location.getChunk().isUnsaved = true;
+        }
     }
 
     private void setupInspectionTooltip() {

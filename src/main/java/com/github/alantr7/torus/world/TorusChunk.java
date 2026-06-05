@@ -4,11 +4,10 @@ import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TorusChunk {
 
@@ -52,7 +51,7 @@ public class TorusChunk {
         for (int i = 0; i < bounds.length; i += 3) {
             BlockLocation relative = structure.location.getRelative(bounds[i], bounds[i + 1], bounds[i + 2]);
             if (contains(relative)) {
-                occupations.put(relative, structure.location);
+//                occupations.put(relative, structure.location); todo: why is this even done? should be loaded actually
             }
         }
     }
@@ -81,6 +80,10 @@ public class TorusChunk {
         return location.x >> 4 == position.x && location.z >> 4 == position.y;
     }
 
+    public BlockLocation getOccupationOwner(BlockLocation location) {
+        return occupations.get(location);
+    }
+
     public StructureInstance getStructure(BlockLocation location) {
         BlockLocation machineLocation = occupations.get(location);
         if (machineLocation == null)
@@ -98,6 +101,24 @@ public class TorusChunk {
 
     public Collection<BlockLocation> getOccupations() {
         return occupations.values();
+    }
+
+    public Collection<BlockLocation> getOccupationsBy(@NotNull StructureInstance structure) {
+        Set<BlockLocation> set = new HashSet<>();
+        for (Map.Entry<BlockLocation, BlockLocation> entry : occupations.entrySet()) {
+            if (entry.getValue().equals(structure.location)) {
+                set.add(entry.getKey());
+            }
+        }
+        return set;
+    }
+
+    public void occupy(BlockLocation occupation, BlockLocation reference) {
+        occupations.put(occupation, reference);
+    }
+
+    public void deoccupy(BlockLocation occupation) {
+        occupations.remove(occupation);
     }
 
 }

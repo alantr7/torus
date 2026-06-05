@@ -263,13 +263,13 @@ public abstract class Structure {
         byte[] offset = calculateOffset(direction.getOpposite());
         location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction, pitch);
-        place(instance);
+        place(instance, true);
 
         location.world.placeStructure(instance);
         return instance;
     }
 
-    public static void place(StructureInstance instance) {
+    public static void place(StructureInstance instance, boolean handleStatus) {
         try {
             instance.setup();
             if (instance instanceof Inspectable inspectable) {
@@ -281,11 +281,12 @@ public abstract class Structure {
             exc.printStackTrace();
         }
 
-        if (instance.location.getChunk().status == Status.PHYSICAL) {
-            instance.makePhysical();
-        }
-        else if (instance.location.getChunk().status == Status.VIRTUAL) {
-            instance.makeVirtual();
+        if (handleStatus) {
+            if (instance.location.getChunk().status == Status.PHYSICAL) {
+                instance.makePhysical();
+            } else if (instance.location.getChunk().status == Status.VIRTUAL) {
+                instance.makeVirtual();
+            }
         }
     }
 
