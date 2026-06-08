@@ -69,9 +69,13 @@ public class TorusChunk {
     protected void makePhysical() {
         status = Status.PHYSICAL;
         for (StructureInstance structure : structures.values()) {
-            structure.makePhysical();
-            if (structure.structure.hasFlag(StructureFlag.TICKABLE)) {
-                tickableStructures.put(structure.location, structure);
+            try {
+                structure.makePhysical();
+                if (structure.structure.hasFlag(StructureFlag.TICKABLE)) {
+                    tickableStructures.put(structure.location, structure);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
