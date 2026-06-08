@@ -133,6 +133,17 @@ power_pole:
   ingredients:
     P: "minecraft:stripped_spruce_wood"
 
+energy_cable:
+  type: CRAFTING
+  result: "torus:energy_cable"
+  shape:
+    - "WWW"
+    - "CCC"
+    - "WWW"
+  ingredients:
+    W: "minecraft:light_gray_wool"
+    C: "minecraft:copper_ingot"
+
 wire_connector:
   type: CRAFTING
   result: "torus:wire_connector"
@@ -176,3 +187,14 @@ shaft:
     - "I "
   ingredients:
     I: "minecraft:iron_ingot"
+
+windmill:
+  type: CRAFTING
+  result: "torus:windmill"
+  shape:
+    - " B "
+    - "BSB"
+    - " B "
+  ingredients:
+    B: "torus:windmill_blade"
+    S: "torus:shaft"
