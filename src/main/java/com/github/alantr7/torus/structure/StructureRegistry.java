@@ -105,6 +105,7 @@ public class StructureRegistry {
 
         structure.initDefaultProperties();
 
+        // Update external config to 0.6.1 format
         if (structure.addon.allowsExternalConfig(ConfigType.STRUCTURE)) {
             File configFile = new File(structure.addon.configsDirectory, structure.id + ".yml");
             File pre_0_6_1_config = new File(structure.addon.configsDirectory, structure.id + ".config.yml");
@@ -147,6 +148,14 @@ public class StructureRegistry {
 
     public Structure getStructure(int id) {
         return loadedByNumericIds.get(id);
+    }
+
+    public String getStructureIdByNumericId(int id) {
+        for (var entry : structuresIds.entrySet()) {
+            if (entry.getValue() == id)
+                return entry.getKey();
+        }
+        return null;
     }
 
     public Set<String> getStructuresIds() {

@@ -80,9 +80,13 @@ public abstract class Structure {
     }
 
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
+        this(addon, addon.id + ":" + id, id, name, instanceClass);
+    }
+
+    protected Structure(TorusAddon addon, String namespacedId, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;
         this.id = id;
-        this.namespacedId = addon.id + ":" + id;
+        this.namespacedId = namespacedId;
         registerProperty(new Property<>("general_settings.name", PropertyType.STRING, name));
         registerProperty(new Property<>("general_settings.placement_offset", PropertyType.VECTOR3I, new Vector3i()));
         registerProperty(new Property<>("general_settings.portable_data", PropertyType.STRING_LIST, new ArrayList<>()));

@@ -8,6 +8,7 @@ import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.machine.UnknownStructure;
 import com.github.alantr7.torus.structure.inspection.InspectableText;
 import com.github.alantr7.torus.structure.socket.*;
 import com.github.alantr7.torus.utils.MathUtils;
@@ -220,7 +221,7 @@ public abstract class StructureInstance {
     }
 
     private static final int MAXIMUM_STRUCTURE_HALF_WIDTH = 8;
-    private void validateCollision() {
+    protected void validateCollision() {
         // TODO: Optimize, there's no need to perform this on every load, maybe use versioning
         //       for collisions, and have versions per chunk saved to data container
 
@@ -393,6 +394,10 @@ public abstract class StructureInstance {
         hologramTranslation.x -= .75f;
         transformation.getTranslation().set(hologramTranslation);
         inspectionHologram.setTransformation(transformation);
+    }
+
+    protected void setCollisionVectors(byte[] collisionVectors) {
+        this.collisionVectors = collisionVectors;
     }
 
     public byte[] getCollisionVectors() {
@@ -702,8 +707,13 @@ public abstract class StructureInstance {
         DataContainer dataContainer = DataContainer.fromBytes(reader, region.strings);
 
         if (structure == null) {
-            TorusLogger.error(Category.STRUCTURES, "Unrecognized structure ID: " + structureId);
-            return null;
+            String namespacedId = TorusPlugin.getInstance().getStructureRegistry().getStructureIdByNumericId(structureId);
+            if (namespacedId == null) {
+                TorusLogger.error(Category.STRUCTURES, "Unrecognized structure ID: " + structureId);
+                return null;
+            }
+            structure = new UnknownStructure(namespacedId, namespacedId.substring(namespacedId.indexOf(":") + 1), structureId);
+            TorusLogger.error(Category.STRUCTURES, "Missing structure: " + namespacedId);
         }
 
         Class<? extends StructureInstance> instanceClass = structure.instanceClass;
