@@ -36,6 +36,7 @@
 - ✔ Connector
 - Photovoltaic Cell
 - ✔ Machine Block
+- ✔ Shaft
 - ✔ Motor
 - ✔ Generator
 - ✔ Transistor
