@@ -1,7 +1,8 @@
 ## Machines
 - ✔ Solar Generator
-- ✔ Coal Generator
+- ✔ Generator
 - ✔ Windmill
+- ✔ Steam Turbine
 - ✔ Pump
 - ✔ Block Breaker
 - ✔ Ore Crusher
@@ -22,6 +23,7 @@
 - ✔ Wire Connector, Wire Relay
 - ✔ Electricity Meter
 - ✔ Light Bulb
+- ✔ Relief Vent
 
 ## Items
 - ✔ Iron Dust, Copper Dust, Gold Dust
