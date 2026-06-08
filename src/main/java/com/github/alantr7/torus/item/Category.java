@@ -18,6 +18,8 @@ public class Category {
 
     public final List<TorusItem> items = new LinkedList<>();
 
+    public static final Category GENERAL = new Category("torus:general", "general", "General", new ItemStack(Material.COMPASS));
+
     public static final Category RESOURCES = new Category("torus:resources", "resources", "Resources", new ItemStack(Material.STICK));
 
     public static final Category GENERATORS = new Category("torus:generators", "generators", "Generators", new ItemStack(Material.PAPER));

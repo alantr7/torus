@@ -17,6 +17,7 @@ public class ItemRegistry {
     private final Map<String, Category> categories = new LinkedHashMap<>();
 
     {
+        categories.put("torus:general", Category.GENERAL);
         categories.put("torus:resources", Category.RESOURCES);
         categories.put("torus:generators", Category.GENERATORS);
         categories.put("torus:machines", Category.MACHINES);

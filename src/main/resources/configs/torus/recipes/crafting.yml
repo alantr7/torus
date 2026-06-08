@@ -167,3 +167,12 @@ generator:
     S: "torus:steel_ingot"
     C: "torus:copper_coil"
     W: "torus:copper_wire"
+
+shaft:
+  type: CRAFTING
+  result: "torus:shaft"
+  shape:
+    - "I "
+    - "I "
+  ingredients:
+    I: "minecraft:iron_ingot"

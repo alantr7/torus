@@ -119,6 +119,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "transistor", new Category[]{Category.COMPONENTS}, null, Material.COMPARATOR, "Transistor", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "circuit_board", new Category[]{Category.COMPONENTS}, null, Material.PAPER, "Circuit Board", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "motor", new Category[]{Category.COMPONENTS}, null, new HeadData("http://textures.minecraft.net/texture/8cbca012f67e54de9aee72ff424e056c2ae58de5eacc949ab2bcd9683cec"), "Motor", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "shaft", new Category[]{Category.COMPONENTS}, null, Material.END_ROD, "Shaft", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill_blade", new Category[]{Category.COMPONENTS}, null, Material.WHITE_BANNER, "Windmill Blade", Collections.emptyList()));
 
         Category.RESOURCES.display = registry.getItemById("torus:copper_dust").toItemStack();
