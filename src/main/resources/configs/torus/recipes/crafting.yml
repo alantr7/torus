@@ -167,17 +167,3 @@ generator:
     S: "torus:steel_ingot"
     C: "torus:copper_coil"
     W: "torus:copper_wire"
-
-coal_generator:
-  type: CRAFTING
-  result: "torus:coal_generator"
-  shape:
-    - "KCK"
-    - "IGI"
-    - "BCB"
-  ingredients:
-    K: "torus:copper_coil"
-    G: "torus:generator"
-    I: "minecraft:iron_ingot"
-    C: "torus:connector"
-    B: "torus:machine_block"
