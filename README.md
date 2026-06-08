@@ -3,7 +3,7 @@
 Torus is a plugin that brings electricity and custom modeled machines to your server without using mods or resource packs.
 
 With Torus you can:
-- Generate electricity with solar panels, coal generators, and more
+- Generate electricity with solar panels, steam turbines, and more
 - Improve your storage systems with item conduits (item filter support!)
 - Multiply ores by crushing them into dust
 - Automate mining entire chunks (similar to BuildCraft's quarry)
