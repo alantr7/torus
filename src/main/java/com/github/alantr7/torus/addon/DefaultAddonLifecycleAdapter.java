@@ -57,7 +57,6 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.LIGHT_BULB);
 
         registry.registerAndInitialize(Structures.GENERATOR);
-        registry.registerAndInitialize(Structures.COAL_GENERATOR);
         registry.registerAndInitialize(Structures.SOLAR_GENERATOR);
         registry.registerAndInitialize(Structures.WINDMILL);
         registry.registerAndInitialize(Structures.STEAM_TURBINE);
