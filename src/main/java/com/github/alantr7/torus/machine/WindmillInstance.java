@@ -84,7 +84,7 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
           .line(() -> isObstructed.get() == 1 ? translate("inspection.windmill.obstructed") : null)
-          .property(translatable("inspection.windmill.efficiency"), () -> (int) (efficiency * 100) + "%");
+          .property(translatable("inspection.rpm"), () -> (int) Math.ceil(efficiency * 20f) + "");
     }
 
     @Override
