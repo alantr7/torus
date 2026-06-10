@@ -66,6 +66,9 @@ public abstract class Structure {
     @Getter
     private int flags = 0;
 
+    @Getter
+    protected int version = 1;
+
     @Getter @Setter
     private ModelController modelController = new ModelController(ModelType.SINGLEPART, Collections.singleton(new ModelCase(
       Collections.emptyMap(), ModelTemplate.EMPTY, null
