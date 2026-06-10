@@ -699,7 +699,7 @@ public abstract class StructureInstance {
                     }
                 }
             } else {
-                System.err.println("Invalid matter or direction!");
+                TorusLogger.error(Category.WORLD, "Invalid matter or direction for structure at " + location);
             }
         }
 

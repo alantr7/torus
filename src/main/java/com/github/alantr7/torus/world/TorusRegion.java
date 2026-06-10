@@ -3,6 +3,8 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.structure.Structure;
@@ -159,16 +161,16 @@ public class TorusRegion {
                         chunk._placeStructureWithOccupations(structure);
 
                         if (structure.isCorrupted) {
-                            System.err.println("Corrupted structure, but still loaded it.");
+                            TorusLogger.error(Category.WORLD, "Loaded corrupted structure structure at " + structure.location);
                         }
 
                         loadedStructures.add(structure);
                     } else {
-                        System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
+                        TorusLogger.error(Category.WORLD, "Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.err.println("Corrupted structure in region " + x + ", " + z + " with ID: " + TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId) + " (" + structureId + ")");
+                    TorusLogger.error(Category.WORLD, "Corrupted structure in region " + x + ", " + z + " with ID: " + TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId) + " (" + structureId + ")");
                 }
                 reader.setPointer(basePointer + length + 4);
             }
