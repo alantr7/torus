@@ -95,6 +95,8 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
                     }
                     conn.slime.setLeashHolder(remote.slime);
                 }
+            } else {
+                Bukkit.broadcastMessage("thing at " + loc + " is not wire connector instance! " + loc.getStructure());
             }
         });
     }
@@ -197,7 +199,7 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         ByteArrayReader reader = new ByteArrayReader(connectionsRaw.get());
         int count = reader.readU1();
         for (int i = 0; i < count; i++) {
-            BlockLocation loc = location.getRelative(reader.readU1(), reader.readU1(), reader.readU1());
+            BlockLocation loc = location.getRelative(reader.readByte(), reader.readByte(), reader.readByte());
             connections.put(loc, new WireConnection(loc, null));
         }
 
@@ -208,9 +210,9 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
         writer.writeU1(connections.size());
 
         connections.forEach((loc, conn) -> {
-            writer.writeU1(loc.x - location.x);
-            writer.writeU1(loc.y - location.y);
-            writer.writeU1(loc.z - location.z);
+            writer.writeByte((byte) (loc.x - location.x));
+            writer.writeByte((byte) (loc.y - location.y));
+            writer.writeByte((byte) (loc.z - location.z));
         });
 
         connectionsRaw.update(writer.getBuffer());
