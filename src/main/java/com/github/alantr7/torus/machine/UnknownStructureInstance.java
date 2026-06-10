@@ -1,7 +1,7 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
-import com.github.alantr7.torus.structure.Inspectable;
+import com.github.alantr7.torus.structure.HologramProvider;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.structure.StructureInstance;
@@ -12,7 +12,7 @@ import com.github.alantr7.torus.world.TorusChunk;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UnknownStructureInstance extends StructureInstance implements Inspectable {
+public class UnknownStructureInstance extends StructureInstance implements HologramProvider {
 
     public UnknownStructureInstance(LoadContext context) {
         super(context);

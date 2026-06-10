@@ -2,9 +2,7 @@ package com.github.alantr7.torus.structure.config;
 
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
-import com.github.alantr7.torus.structure.Inspectable;
 import com.github.alantr7.torus.structure.Structure;
-import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.property.Property;
 import com.github.alantr7.torus.structure.property.PropertyType;
 import org.bukkit.configuration.MemorySection;

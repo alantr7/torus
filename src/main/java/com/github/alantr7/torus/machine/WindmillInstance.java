@@ -17,7 +17,7 @@ import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
 
-public class WindmillInstance extends StructureInstance implements RotationSource, Inspectable {
+public class WindmillInstance extends StructureInstance implements RotationSource, HologramProvider {
 
     @Getter
     float heightEfficiency;

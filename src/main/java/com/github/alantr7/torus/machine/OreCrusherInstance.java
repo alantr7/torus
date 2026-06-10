@@ -24,7 +24,7 @@ import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.OreCrusher.STATE_WORKING;
 
-public class OreCrusherInstance extends StructureInstance implements Inspectable, EnergyContainer {
+public class OreCrusherInstance extends StructureInstance implements HologramProvider, EnergyContainer {
 
     protected StructurePart leftWheel, rightWheel;
     protected EnergySocket energySocket;

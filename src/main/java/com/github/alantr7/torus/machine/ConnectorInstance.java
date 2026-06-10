@@ -6,7 +6,7 @@ import com.github.alantr7.torus.gui.structure.ConnectorFilterEditGUI;
 import com.github.alantr7.torus.item.ItemCriteria;
 import com.github.alantr7.torus.item.ItemReference;
 import com.github.alantr7.torus.item.TorusItem;
-import com.github.alantr7.torus.structure.Inspectable;
+import com.github.alantr7.torus.structure.HologramProvider;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.BlockLocation;
@@ -32,7 +32,7 @@ import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Connector.*;
 
-public class ConnectorInstance extends StructureInstance implements Inspectable {
+public class ConnectorInstance extends StructureInstance implements HologramProvider {
 
     protected Data<Integer> flowDirectionData = dataContainer.persist("flow", Data.Type.INT, 0);
 

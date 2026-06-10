@@ -274,7 +274,7 @@ public abstract class StructureInstance {
     }
 
     private void setupInspectionTooltip() {
-        if (!isCorrupted && !(this instanceof Inspectable)) {
+        if (!isCorrupted && !(this instanceof HologramProvider)) {
             return;
         }
         if (inspectableDataContainer.inspectableBlocks.isEmpty()) {

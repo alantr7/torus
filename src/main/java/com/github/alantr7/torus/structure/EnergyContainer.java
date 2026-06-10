@@ -5,7 +5,7 @@ import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 
-public interface EnergyContainer extends Inspectable {
+public interface EnergyContainer extends HologramProvider {
 
     FlowMeter getFlowMeter();
 

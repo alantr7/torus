@@ -93,7 +93,7 @@ public abstract class Structure {
         registerProperty(new Property<>("general_settings.name", PropertyType.STRING, name));
         registerProperty(new Property<>("general_settings.placement_offset", PropertyType.VECTOR3I, new Vector3i()));
         registerProperty(new Property<>("general_settings.portable_data", PropertyType.STRING_LIST, new ArrayList<>()));
-        if (Inspectable.class.isAssignableFrom(instanceClass)) {
+        if (HologramProvider.class.isAssignableFrom(instanceClass)) {
             registerProperty(new Property<>("info_hologram.offset", PropertyType.VECTOR3F, new Vector3f(0f, 0f, 0f)));
             registerProperty(new Property<>("info_hologram.translation", PropertyType.VECTOR3F, new Vector3f(1.2f, 0f, 0f)));
         }
@@ -279,8 +279,8 @@ public abstract class Structure {
     public static void place(StructureInstance instance, boolean handleStatus) {
         try {
             instance.setup();
-            if (instance instanceof Inspectable inspectable) {
-                instance.inspectableDataContainer = inspectable.setupInspectableData();
+            if (instance instanceof HologramProvider hologramProvider) {
+                instance.inspectableDataContainer = hologramProvider.setupInspectableData();
             }
         } catch (Exception exc) {
             instance.isCorrupted = true;

@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
 
-public class FluidTankInstance extends StructureInstance implements FluidContainer, Inspectable {
+public class FluidTankInstance extends StructureInstance implements FluidContainer, HologramProvider {
 
     protected StructurePart liquidComponent;
 
