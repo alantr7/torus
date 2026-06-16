@@ -3,14 +3,18 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
+import com.github.alantr7.torus.structure.builder.StructurePartDef;
+import com.github.alantr7.torus.structure.builder.StructureSocketDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.socket.FluidSocket;
+import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.world.Fluid;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class PressureVentInstance extends StructureInstance implements FluidContainer {
 
@@ -30,6 +34,11 @@ public class PressureVentInstance extends StructureInstance implements FluidCont
 
     @Override
     protected void setup() throws SetupException {
+        if (getSocket("out_fluid") == null) {
+            StructurePart part = new StructurePart(this, new BlockLocation(location.world, 0, 0, 0), "out_fluid");
+            parts.put(part.name, part);
+            outFluid = (FluidSocket) createSocket(Socket.Medium.FLUID, part, direction.getLeft().mask(), Socket.FlowDirection.OUT);
+        }
         outFluid = requireSocket("out_fluid", FluidSocket.class);
         outFluid.maximumOutput = 1000;
     }

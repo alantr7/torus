@@ -11,7 +11,6 @@ import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.WasherRecipe;
 import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
-import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inventory.CustomStructureInventory;
 import com.github.alantr7.torus.structure.inventory.StructureInventory;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OreWasherInstance extends StructureInstance implements EnergyContainer, FluidContainer, Inspectable {
+public class OreWasherInstance extends StructureInstance implements EnergyContainer, FluidContainer, HologramProvider {
 
     protected Data<Integer> water = dataContainer.persist("fluid", Data.Type.INT, 0);
 

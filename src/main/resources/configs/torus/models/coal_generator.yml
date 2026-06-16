@@ -1,4 +1,0 @@
-type: SINGLEPART
-cases:
-  fallback:
-    model: "coal_generator"

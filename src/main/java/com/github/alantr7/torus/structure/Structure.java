@@ -66,6 +66,9 @@ public abstract class Structure {
     @Getter
     private int flags = 0;
 
+    @Getter
+    protected int version = 1;
+
     @Getter @Setter
     private ModelController modelController = new ModelController(ModelType.SINGLEPART, Collections.singleton(new ModelCase(
       Collections.emptyMap(), ModelTemplate.EMPTY, null
@@ -80,13 +83,17 @@ public abstract class Structure {
     }
 
     public Structure(TorusAddon addon, String id, String name, Class<? extends StructureInstance> instanceClass) {
+        this(addon, addon.id + ":" + id, id, name, instanceClass);
+    }
+
+    protected Structure(TorusAddon addon, String namespacedId, String id, String name, Class<? extends StructureInstance> instanceClass) {
         this.addon = addon;
         this.id = id;
-        this.namespacedId = addon.id + ":" + id;
+        this.namespacedId = namespacedId;
         registerProperty(new Property<>("general_settings.name", PropertyType.STRING, name));
         registerProperty(new Property<>("general_settings.placement_offset", PropertyType.VECTOR3I, new Vector3i()));
         registerProperty(new Property<>("general_settings.portable_data", PropertyType.STRING_LIST, new ArrayList<>()));
-        if (Inspectable.class.isAssignableFrom(instanceClass)) {
+        if (HologramProvider.class.isAssignableFrom(instanceClass)) {
             registerProperty(new Property<>("info_hologram.offset", PropertyType.VECTOR3F, new Vector3f(0f, 0f, 0f)));
             registerProperty(new Property<>("info_hologram.translation", PropertyType.VECTOR3F, new Vector3f(1.2f, 0f, 0f)));
         }
@@ -263,17 +270,17 @@ public abstract class Structure {
         byte[] offset = calculateOffset(direction.getOpposite());
         location = location.getRelative(offset[0], offset[1], offset[2]);
         StructureInstance instance = instantiate(location, direction, pitch);
-        place(instance);
+        place(instance, true);
 
         location.world.placeStructure(instance);
         return instance;
     }
 
-    public static void place(StructureInstance instance) {
+    public static void place(StructureInstance instance, boolean handleStatus) {
         try {
             instance.setup();
-            if (instance instanceof Inspectable inspectable) {
-                instance.inspectableDataContainer = inspectable.setupInspectableData();
+            if (instance instanceof HologramProvider hologramProvider) {
+                instance.inspectableDataContainer = hologramProvider.setupInspectableData();
             }
         } catch (Exception exc) {
             instance.isCorrupted = true;
@@ -281,11 +288,12 @@ public abstract class Structure {
             exc.printStackTrace();
         }
 
-        if (instance.location.getChunk().status == Status.PHYSICAL) {
-            instance.makePhysical();
-        }
-        else if (instance.location.getChunk().status == Status.VIRTUAL) {
-            instance.makeVirtual();
+        if (handleStatus) {
+            if (instance.location.getChunk().status == Status.PHYSICAL) {
+                instance.makePhysical();
+            } else if (instance.location.getChunk().status == Status.VIRTUAL) {
+                instance.makeVirtual();
+            }
         }
     }
 

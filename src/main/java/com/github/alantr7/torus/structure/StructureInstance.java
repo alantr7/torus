@@ -8,6 +8,7 @@ import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.item.TorusItem;
 import com.github.alantr7.torus.log.Category;
 import com.github.alantr7.torus.log.TorusLogger;
+import com.github.alantr7.torus.machine.UnknownStructure;
 import com.github.alantr7.torus.structure.inspection.InspectableText;
 import com.github.alantr7.torus.structure.socket.*;
 import com.github.alantr7.torus.utils.MathUtils;
@@ -29,6 +30,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Interaction;
@@ -173,6 +175,9 @@ public abstract class StructureInstance {
 
         status = Status.PHYSICAL;
 
+        // Delete extra barriers and place missing barriers
+        validateCollision();
+
         // Setup model
         try {
             if (!structure.hasFlag(StructureFlag.COLLIDABLE)) {
@@ -216,8 +221,61 @@ public abstract class StructureInstance {
         model = new Model(ModelTemplate.EMPTY);
     }
 
+    private static final int MAXIMUM_STRUCTURE_HALF_WIDTH = 8;
+    protected void validateCollision() {
+        // TODO: Optimize, there's no need to perform this on every load, maybe use versioning
+        //       for collisions, and have versions per chunk saved to data container
+
+        int fromChunkX = (location.x - MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+        int fromChunkZ = (location.z - MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+        int toChunkX = (location.x + MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+        int toChunkZ = (location.z + MAXIMUM_STRUCTURE_HALF_WIDTH) >> 4;
+
+        Set<BlockLocation> vectors = new HashSet<>();
+        byte[] vectorsBytes = getCollisionVectors();
+
+        byte modified = 0;
+
+        // Load vectors and place missing barriers
+        for (int i = 0; i < vectorsBytes.length; i += 3) {
+            BlockLocation vector = location.getRelative(vectorsBytes[i], vectorsBytes[i+1], vectorsBytes[i+2]);
+            vectors.add(vector);
+
+            TorusChunk chunk = location.world.getChunk(vector);
+            if (chunk != null && chunk.status == Status.PHYSICAL) {
+                if (!location.equals(chunk.getOccupationOwner(vector))) {
+                    vector.getBlock().setType(Material.BARRIER);
+                    chunk.occupy(vector, location);
+                    modified++;
+                }
+            }
+        }
+
+        // Remove remaining barriers
+        for (int chunkX = fromChunkX; chunkX <= toChunkX; chunkX++) {
+            for (int chunkZ = fromChunkZ; chunkZ <= toChunkZ; chunkZ++) {
+                TorusChunk chunk = location.world.getChunkAt(chunkX, chunkZ);
+                if (chunk == null || chunk.status != Status.PHYSICAL)
+                    continue;
+
+                for (BlockLocation occupation : chunk.getOccupationsBy(this)) {
+                    if (!vectors.contains(occupation)) {
+                        occupation.getBlock().setType(Material.AIR);
+                        vectors.remove(occupation);
+                        chunk.deoccupy(occupation);
+                        modified++;
+                    }
+                }
+            }
+        }
+
+        if (modified != 0) {
+            location.getChunk().isUnsaved = true;
+        }
+    }
+
     private void setupInspectionTooltip() {
-        if (!isCorrupted && !(this instanceof Inspectable)) {
+        if (!isCorrupted && !(this instanceof HologramProvider)) {
             return;
         }
         if (inspectableDataContainer.inspectableBlocks.isEmpty()) {
@@ -337,6 +395,10 @@ public abstract class StructureInstance {
         hologramTranslation.x -= .75f;
         transformation.getTranslation().set(hologramTranslation);
         inspectionHologram.setTransformation(transformation);
+    }
+
+    protected void setCollisionVectors(byte[] collisionVectors) {
+        this.collisionVectors = collisionVectors;
     }
 
     public byte[] getCollisionVectors() {
@@ -639,7 +701,7 @@ public abstract class StructureInstance {
                     }
                 }
             } else {
-                System.err.println("Invalid matter or direction!");
+                TorusLogger.error(Category.WORLD, "Invalid matter or direction for structure at " + location);
             }
         }
 
@@ -647,8 +709,13 @@ public abstract class StructureInstance {
         DataContainer dataContainer = DataContainer.fromBytes(reader, region.strings);
 
         if (structure == null) {
-            TorusLogger.error(Category.STRUCTURES, "Unrecognized structure ID: " + structureId);
-            return null;
+            String namespacedId = TorusPlugin.getInstance().getStructureRegistry().getStructureIdByNumericId(structureId);
+            if (namespacedId == null) {
+                TorusLogger.error(Category.STRUCTURES, "Unrecognized structure ID: " + structureId);
+                return null;
+            }
+            structure = new UnknownStructure(namespacedId, namespacedId.substring(namespacedId.indexOf(":") + 1), structureId);
+            TorusLogger.error(Category.STRUCTURES, "Missing structure: " + namespacedId);
         }
 
         Class<? extends StructureInstance> instanceClass = structure.instanceClass;

@@ -9,16 +9,15 @@ import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Cuboid;
 import com.github.alantr7.torus.world.Direction;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.WorldType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 import static com.github.alantr7.torus.lang.Localization.translate;
 import static com.github.alantr7.torus.machine.Windmill.STATE_ACTIVE;
 
-public class WindmillInstance extends StructureInstance implements RotationSource, Inspectable {
+public class WindmillInstance extends StructureInstance implements RotationSource, HologramProvider {
 
     @Getter
     float heightEfficiency;
@@ -71,9 +70,13 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
         ticks++;
     }
 
-    @Override
+    @Override @SuppressWarnings("deprecation")
     protected void setup() throws SetupException {
-        heightEfficiency = (float) Math.pow(Math.E, -8f/(location.y / 8f + 8f)) * 1.15505059f;
+        if (location.world.getBukkit().getWorldType() == WorldType.FLAT) {
+            heightEfficiency = 1.0f;
+        } else {
+            heightEfficiency = (float) Math.pow(Math.E, -8f / (location.y / 8f + 8f)) * 1.15505059f;
+        }
         state.set(STATE_ACTIVE, heightEfficiency != 0, false);
     }
 
@@ -81,7 +84,7 @@ public class WindmillInstance extends StructureInstance implements RotationSourc
     public InspectableDataContainer setupInspectableData() {
         return new InspectableDataContainer((byte) 2)
           .line(() -> isObstructed.get() == 1 ? translate("inspection.windmill.obstructed") : null)
-          .property(translatable("inspection.windmill.efficiency"), () -> (int) (efficiency * 100) + "%");
+          .property(translatable("inspection.rpm"), () -> (int) Math.ceil(efficiency * 20f) + "");
     }
 
     @Override

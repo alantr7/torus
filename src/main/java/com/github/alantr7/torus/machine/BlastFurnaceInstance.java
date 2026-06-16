@@ -8,7 +8,7 @@ import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
 import com.github.alantr7.torus.structure.socket.ItemSocket;
 import com.github.alantr7.torus.world.Direction;
 import com.github.alantr7.torus.recipe.BlastFurnaceRecipe;
-import com.github.alantr7.torus.structure.Inspectable;
+import com.github.alantr7.torus.structure.HologramProvider;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.Structures;
@@ -26,7 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BlastFurnaceInstance extends StructureInstance implements Inspectable {
+public class BlastFurnaceInstance extends StructureInstance implements HologramProvider {
 
     protected ItemSocket inputSocket;
 

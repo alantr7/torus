@@ -5,7 +5,6 @@ import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.inspection.InspectableDataContainer;
-import com.github.alantr7.torus.structure.property.PropertyType;
 import com.github.alantr7.torus.structure.socket.FluidSocket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -14,7 +13,7 @@ import lombok.Getter;
 
 import static com.github.alantr7.torus.lang.Localization.translatable;
 
-public class SteamTurbineInstance extends StructureInstance implements Inspectable, RotationSource {
+public class SteamTurbineInstance extends StructureInstance implements HologramProvider, RotationSource {
 
     @Getter
     protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);

@@ -3,6 +3,8 @@ package com.github.alantr7.torus.world;
 import com.github.alantr7.bytils.buffer.ByteArrayReader;
 import com.github.alantr7.bytils.buffer.ByteArrayWriter;
 import com.github.alantr7.torus.TorusPlugin;
+import com.github.alantr7.torus.log.Category;
+import com.github.alantr7.torus.log.TorusLogger;
 import com.github.alantr7.torus.structure.Status;
 import com.github.alantr7.torus.utils.StringPool;
 import com.github.alantr7.torus.structure.Structure;
@@ -124,6 +126,8 @@ public class TorusRegion {
         byte[] buffer = new byte[chunkSize];
         raf.readFully(buffer);
 
+        List<StructureInstance> loadedStructures = new ArrayList<>();
+
         ByteArrayReader reader = new ByteArrayReader(buffer);
         while (reader.hasNext()) {
             int basePointer = reader.getPointer();
@@ -153,20 +157,34 @@ public class TorusRegion {
                 try {
                     StructureInstance structure = StructureInstance.fromBytes(this, chunk, reader, structureId);
                     if (structure != null) {
-                        Structure.place(structure);
+                        Structure.place(structure, false);
                         chunk._placeStructureWithOccupations(structure);
 
                         if (structure.isCorrupted) {
-                            System.err.println("Corrupted structure, but still loaded it.");
+                            TorusLogger.error(Category.WORLD, "Loaded corrupted structure structure at " + structure.location);
                         }
+
+                        loadedStructures.add(structure);
                     } else {
-                        System.err.println("Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
+                        TorusLogger.error(Category.WORLD, "Could not load structure in " + chunk.position.x + ", " + chunk.position.y + " at offset #" + basePointer);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.err.println("Corrupted structure in region " + x + ", " + z + " with ID: " + TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId) + " (" + structureId + ")");
+                    TorusLogger.error(Category.WORLD, "Corrupted structure in region " + x + ", " + z + " with ID: " + TorusPlugin.getInstance().getStructureRegistry().getStructure(structureId) + " (" + structureId + ")");
                 }
                 reader.setPointer(basePointer + length + 4);
+            }
+        }
+
+        for (StructureInstance structure : loadedStructures) {
+            try {
+                if (structure.location.getChunk().status == Status.PHYSICAL) {
+                    structure.makePhysical();
+                } else if (structure.location.getChunk().status == Status.VIRTUAL) {
+                    structure.makeVirtual();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -223,8 +241,8 @@ public class TorusRegion {
             BlockLocation occupation = entry.getKey();
             BlockLocation structureLocation = entry.getValue();
 
-            if (chunk.contains(structureLocation))
-                continue;
+//            if (chunk.contains(structureLocation)) todo: this might break things
+//                continue;
 
             writer.writeU2(1);
             writer.writeU1(((occupation.x & 15) << 4) | (occupation.z & 15));
