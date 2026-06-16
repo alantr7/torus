@@ -95,8 +95,6 @@ public class WireConnectorInstance extends StructureInstance implements Conducto
                     }
                     conn.slime.setLeashHolder(remote.slime);
                 }
-            } else {
-                Bukkit.broadcastMessage("thing at " + loc + " is not wire connector instance! " + loc.getStructure());
             }
         });
     }
