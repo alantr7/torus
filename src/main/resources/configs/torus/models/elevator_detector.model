@@ -1,0 +1,6 @@
+model_version: 2
+
+base:
+  renderer: DISPLAY_ENTITIES
+  elements:
+    - item_display,observer,0,0.5,0,1,1,1,0,180,0

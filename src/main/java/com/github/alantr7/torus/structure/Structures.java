@@ -30,6 +30,7 @@ public class Structures {
     public static final Turret TURRET = new Turret();
     public static final Elevator ELEVATOR = new Elevator();
     public static final ElevatorInterface ELEVATOR_INTERFACE = new ElevatorInterface();
+    public static final ElevatorDetector ELEVATOR_DETECTOR = new ElevatorDetector();
 
     public static final Faucet FAUCET = new Faucet();
     public static final LightBulb LIGHT_BULB = new LightBulb();

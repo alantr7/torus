@@ -11,7 +11,6 @@ import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.structure.Structures;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,7 +18,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Collections;
-import java.util.List;
 
 public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
 
@@ -55,6 +53,7 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.TURRET);
         registry.registerAndInitialize(Structures.ELEVATOR);
         registry.registerAndInitialize(Structures.ELEVATOR_INTERFACE);
+        registry.registerAndInitialize(Structures.ELEVATOR_DETECTOR);
 
         registry.registerAndInitialize(Structures.FAUCET);
         registry.registerAndInitialize(Structures.LIGHT_BULB);
@@ -83,8 +82,9 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "elevator", new Category[]{Category.MACHINES}, Structures.ELEVATOR, Material.PAPER, "Elevator", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "elevator_interface", new Category[]{Category.MACHINES}, Structures.ELEVATOR_INTERFACE, Material.PAPER, "Elevator Interface", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "elevator_detector", new Category[]{Category.MACHINES}, Structures.ELEVATOR_DETECTOR, Material.PAPER, "Elevator Detector", Collections.emptyList()));
+
         // Machines
-        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "blast_furnace", new Category[]{Category.MACHINES}, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "block_breaker", new Category[]{Category.MACHINES}, Structures.BLOCK_BREAKER, Material.PAPER, "Block Breaker", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "pressure_vent", new Category[]{Category.MACHINES}, Structures.PRESSURE_VENT, Material.PAPER, "Pressure Relief Vent", Collections.emptyList()));
