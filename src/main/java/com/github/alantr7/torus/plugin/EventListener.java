@@ -29,9 +29,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.CraftingRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -151,6 +149,45 @@ public class EventListener implements Listener {
             if (structure.structure.hasFlag(StructureFlag.INTERACTABLE) && structure.testOwnership(event.getPlayer())) {
                 if (EventUtils.callStructureInteractEvent(event.getPlayer(), structure, clickedBlockLocation)) {
                     if (structure.onPlayerInteract(event, new BlockLocation(event.getClickedBlock().getLocation()))) {
+                        player.placementCooldownExpiry = System.currentTimeMillis() + 200;
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    void onMachineInteract(PlayerInteractAtEntityEvent event) {
+        if (!TorusPlugin.getInstance().getWorldManager().isWorldSupported(event.getPlayer().getWorld()))
+            return;
+
+        TorusPlayer player = TorusPlayer.get(event.getPlayer());
+
+        if (player.interactionCooldownExpiry > System.currentTimeMillis())
+            return;
+
+        if (!(event.getRightClicked() instanceof Interaction interaction))
+            return;
+
+        BlockLocation clickedBlockLocation = new BlockLocation(event.getRightClicked().getLocation());
+        StructureInstance structure = clickedBlockLocation.getStructure();
+        if (structure != null) {
+            player.interactionCooldownExpiry = System.currentTimeMillis() + 200;
+
+            if (event.getPlayer().isSneaking() && event.getPlayer().getInventory().getItem(event.getHand()).hasItemMeta()) {
+                ItemStack stack = event.getPlayer().getInventory().getItem(event.getHand());
+                TorusItem torusItem = TorusItem.getByItemStack(stack);
+                if (torusItem != null) {
+                    if (torusItem.isPlaceable())
+                        return;
+                } else if (stack.getType().isBlock())
+                    return;
+            }
+
+            if (structure.structure.hasFlag(StructureFlag.INTERACTABLE) && structure.testOwnership(event.getPlayer())) {
+                if (EventUtils.callStructureInteractEvent(event.getPlayer(), structure, clickedBlockLocation)) {
+                    if (structure.onPlayerInteract(event, interaction)) {
                         player.placementCooldownExpiry = System.currentTimeMillis() + 200;
                         event.setCancelled(true);
                     }

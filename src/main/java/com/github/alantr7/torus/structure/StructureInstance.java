@@ -36,6 +36,7 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -176,7 +177,9 @@ public abstract class StructureInstance {
         status = Status.PHYSICAL;
 
         // Delete extra barriers and place missing barriers
-        validateCollision();
+        if (structure.hasFlag(StructureFlag.COLLIDABLE)) {
+            validateCollision();
+        }
 
         // Setup model
         try {
@@ -584,6 +587,10 @@ public abstract class StructureInstance {
     }
 
     public boolean onPlayerInteract(PlayerInteractEvent event, BlockLocation location) {
+        return false;
+    }
+
+    public boolean onPlayerInteract(PlayerInteractAtEntityEvent event, Interaction entity) {
         return false;
     }
 
