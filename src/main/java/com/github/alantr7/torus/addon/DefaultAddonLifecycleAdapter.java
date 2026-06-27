@@ -53,6 +53,8 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerAndInitialize(Structures.FLUID_TANK);
 
         registry.registerAndInitialize(Structures.TURRET);
+        registry.registerAndInitialize(Structures.ELEVATOR);
+        registry.registerAndInitialize(Structures.ELEVATOR_INTERFACE);
 
         registry.registerAndInitialize(Structures.FAUCET);
         registry.registerAndInitialize(Structures.LIGHT_BULB);
@@ -78,6 +80,9 @@ public class DefaultAddonLifecycleAdapter extends LifecycleAdapter {
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "windmill", new Category[]{Category.GENERATORS}, Structures.WINDMILL, Material.PAPER, "Windmill", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "steam_turbine", new Category[]{Category.GENERATORS}, Structures.STEAM_TURBINE, Material.PAPER, "Steam Turbine", Collections.emptyList()));
 
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "elevator", new Category[]{Category.MACHINES}, Structures.ELEVATOR, Material.PAPER, "Elevator", Collections.emptyList()));
+        registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "elevator_interface", new Category[]{Category.MACHINES}, Structures.ELEVATOR_INTERFACE, Material.PAPER, "Elevator Interface", Collections.emptyList()));
         // Machines
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "turret", new Category[]{Category.MACHINES}, Structures.TURRET, Material.PAPER, "Turret", Collections.emptyList()));
         registry.registerItem(new TorusItem(TorusPlugin.DEFAULT_ADDON, "blast_furnace", new Category[]{Category.MACHINES}, Structures.BLAST_FURNACE, Material.PAPER, "Blast Furnace", Collections.emptyList()));
