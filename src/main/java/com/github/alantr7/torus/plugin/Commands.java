@@ -10,9 +10,9 @@ import com.github.alantr7.bukkitplugin.gui.GUI;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.api.TorusAPI;
 import com.github.alantr7.torus.api.addon.LifecycleAction;
-import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.gui.browser.ItemBrowserMainGUI;
 import com.github.alantr7.torus.item.TorusItem;
+import com.github.alantr7.torus.machine.ElevatorInstance;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.EntityReference;
@@ -305,6 +305,17 @@ public class Commands {
           ctx.respond("Chunk size: " + chunk.getSize() + " bytes");
           ctx.respond("Structures: " + chunk.getStructures().size());
           ctx.respond("Occupations: " + chunk.getOccupations().size());
+      });
+
+    @CommandHandler Command setElevatorTarget = CommandBuilder.using("torus")
+      .parameter("debug")
+      .parameter("set_elevator_target")
+      .parameter("{y}", Integer.class, p -> p.evaluator(Evaluator.INTEGER))
+      .permission(Permissions.COMMAND_DEBUG)
+      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
+      .executes(ctx -> {
+          Player player = (Player) ctx.getExecutor();
+          ElevatorInstance.targetY = (int) ctx.getArgument("y");
       });
 
 }
