@@ -28,6 +28,7 @@ public class Structures {
     public static final FluidTank FLUID_TANK = new FluidTank();
 
     public static final Turret TURRET = new Turret();
+    public static final Elevator ELEVATOR = new Elevator();
 
     public static final Faucet FAUCET = new Faucet();
     public static final LightBulb LIGHT_BULB = new LightBulb();
