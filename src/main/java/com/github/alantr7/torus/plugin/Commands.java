@@ -307,15 +307,4 @@ public class Commands {
           ctx.respond("Occupations: " + chunk.getOccupations().size());
       });
 
-    @CommandHandler Command setElevatorTarget = CommandBuilder.using("torus")
-      .parameter("debug")
-      .parameter("set_elevator_target")
-      .parameter("{y}", Integer.class, p -> p.evaluator(Evaluator.INTEGER))
-      .permission(Permissions.COMMAND_DEBUG)
-      .forExecutors(ExecutorType.PLAYER).permission(Permissions.COMMAND_DEBUG)
-      .executes(ctx -> {
-          Player player = (Player) ctx.getExecutor();
-          ElevatorInstance.targetY = (int) ctx.getArgument("y");
-      });
-
 }
