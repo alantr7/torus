@@ -18,14 +18,14 @@ public class ElevatorInterface extends Structure {
 
     public ElevatorInterface() {
         super(TorusPlugin.DEFAULT_ADDON, "elevator_interface", ElevatorInterfaceInstance.class);
-        setFlags(StructureFlag.INTERACTABLE);
+        setFlags(StructureFlag.INTERACTABLE | StructureFlag.TICKABLE);
     }
 
     @Override
     protected StructureInstance instantiate(@NotNull BlockLocation location, Direction direction, Pitch pitch) {
         return new ElevatorInterfaceInstance(this, location, new StructureBodyDef(new StructurePartDef[]{
           new StructurePartDef("base", new Vector3f()),
-          new StructurePartDef("in_out_data", new Vector3f(), new StructureSocketDef(
+          new StructurePartDef("data", new Vector3f(), new StructureSocketDef(
             Socket.Medium.DATA, Socket.FlowDirection.ALL, direction.getOpposite().mask()
           ))
         }), direction);

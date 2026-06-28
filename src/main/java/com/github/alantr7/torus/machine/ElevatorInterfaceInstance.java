@@ -1,10 +1,12 @@
 package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.exception.SetupException;
+import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
+import com.github.alantr7.torus.structure.socket.DataSocket;
 import com.github.alantr7.torus.utils.MathUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -19,15 +21,22 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 
+import java.util.Collections;
+import java.util.Map;
+
 public class ElevatorInterfaceInstance extends StructureInstance {
+
+    protected static final float panelWidth = 0.8f;
+
+    protected static final float panelHeight = 0.9f;
 
     protected BoundingBox[] interactionBoxes = new BoundingBox[8];
 
     protected TextDisplay[] buttons = new TextDisplay[8];
 
-    protected static final float panelWidth = 0.8f;
+    protected ElevatorInstance elevator;
 
-    protected static final float panelHeight = 0.9f;
+    protected DataSocket dataSocket;
 
     ElevatorInterfaceInstance(LoadContext context) {
         super(context);
@@ -46,9 +55,27 @@ public class ElevatorInterfaceInstance extends StructureInstance {
         float[] matrixA = MathUtils.rotateVector(new float[] { minX, minZ }, direction.rotH);
         float[] matrixB = MathUtils.rotateVector(new float[] { maxX, maxZ }, direction.rotH);
 
-
         for (int i = 0; i < 8; i++) {
             interactionBoxes[i] = new BoundingBox(matrixA[0], (1 - panelHeight) / 2f + (7 - i) / 8f * panelHeight, matrixA[1], matrixB[0], (1 - panelHeight) / 2f + (8 - i) / 8f * panelHeight, matrixB[1]);
+        }
+
+        dataSocket = requireSocket("data", DataSocket.class);
+    }
+
+    int ticks;
+
+    @Override
+    public void tick(boolean isVirtual) {
+        if (ticks % 3 == 0) {
+            this.elevator = null;
+            for (Node node : dataSocket.network.nodes) {
+                if (node.structure instanceof ElevatorInstance elevator) {
+                    this.elevator = elevator;
+                    break;
+                }
+            }
+            // todo: should only be called if map is changed
+            updateScreen();
         }
     }
 
@@ -67,6 +94,9 @@ public class ElevatorInterfaceInstance extends StructureInstance {
 
     @Override
     public boolean onPlayerInteract(PlayerInteractAtEntityEvent event, Interaction entity) {
+        if (elevator == null)
+            return true;
+
         Vector dr = event.getPlayer().getEyeLocation().getDirection().multiply(0.07);
         Vector r = location.toBukkit().add(event.getClickedPosition()).subtract(location.toBukkit()).clone().toVector();
 
@@ -80,14 +110,19 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             for (int j = 0; j < interactionBoxes.length; j++) {
                 BoundingBox box = interactionBoxes[j];
                 if (box.contains(r)) {
-                    event.getPlayer().sendMessage("#" + (j + 1));
-                    return true;
+                    int index = 0;
+                    for (int floor : elevator.floors.keySet()) {
+                        if (index++ == j) {
+                            elevator.setTargetHeight(floor);
+                            return true;
+                        }
+                    }
                 }
             }
             r.add(dr);
         }
 
-        return false;
+        return true;
     }
 
     protected void updateScreen() {
@@ -98,11 +133,15 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             buttons[i] = null;
         }
 
+        if (elevator == null)
+            return;
+
         float[] positionXZ = MathUtils.rotateVector(new float[] { 0f, 0.35f }, direction.rotH);
 
-        for (int i = 0; i < buttons.length; i++) {
+        int i = 0;
+        for (var entry : elevator.floors.entrySet()) {
             Location buttonLocation = location.toBukkitCentered();
-            buttonLocation.add(positionXZ[0], (1 - panelHeight) / 2f + (i / 8f) * panelHeight, positionXZ[1]);
+            buttonLocation.add(positionXZ[0], (1 - panelHeight) / 2f + ((7 - i) / 8f) * panelHeight, positionXZ[1]);
 
             TextDisplay button = location.world.getBukkit().spawn(buttonLocation, TextDisplay.class);
             button.setRotation(direction.rotH + 180, 0);
@@ -113,13 +152,13 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             button.setPersistent(false);
             button.setShadowed(false);
             button.setBrightness(new Display.Brightness(15, 15));
-            button.setText(ChatColor.BLACK + "Floor #" + (8 - i));
+            button.setText(ChatColor.BLACK + entry.getValue() + "(y: " + entry.getKey() + ")");
 
             Transformation transformation = button.getTransformation();
             transformation.getScale().set(0.4f, 0.4f, 0.4f);
             button.setTransformation(transformation);
 
-            buttons[i] = button;
+            buttons[i++] = button;
         }
     }
 

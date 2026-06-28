@@ -3,11 +3,13 @@ package com.github.alantr7.torus.machine;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
+import com.github.alantr7.torus.network.Node;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
+import com.github.alantr7.torus.structure.socket.DataSocket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Bukkit;
@@ -18,13 +20,11 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.util.Collection;
+import java.util.*;
 
 public class ElevatorInstance extends StructureInstance {
 
     private static final int NO_TARGET = 512;
-
-    public static int targetY = NO_TARGET;
 
     public static final int MAX = 9;
 
@@ -32,7 +32,13 @@ public class ElevatorInstance extends StructureInstance {
 
     protected Data<Integer> height = dataContainer.persist("height", Data.Type.INT, 0);
 
+    protected Data<Integer> targetHeight = dataContainer.persist("target_height", Data.Type.INT, NO_TARGET);
+
+    protected Map<Integer, String> floors = new HashMap<>();
+
     protected ArmorStand elevatorCarrier;
+
+    protected DataSocket dataSocket;
 
     ElevatorInstance(LoadContext context) {
         super(context);
@@ -44,7 +50,7 @@ public class ElevatorInstance extends StructureInstance {
 
     @Override
     protected void setup() throws SetupException {
-
+        dataSocket = requireSocket("data", DataSocket.class);
     }
 
     @Override
@@ -77,26 +83,46 @@ public class ElevatorInstance extends StructureInstance {
 
     float pos;
 
+    int ticks;
+
     @Override
     public void tick(boolean isVirtual) {
-        if (targetY == NO_TARGET) {
+        // Update floors list
+        if (ticks % 3 == 0) {
+            TreeMap<Integer, String> floors = new TreeMap<>(Comparator.comparingInt(a -> (int) a).reversed());
+            for (Node node : dataSocket.network.nodes) {
+                if (node.structure instanceof ElevatorDetectorInstance detector) {
+                    floors.put(detector.location.y + 1, "");
+                }
+            }
+            int floor = floors.size();
+            for (var entry : floors.entrySet()) {
+                entry.setValue("Floor " + floor--);
+            }
+
+            this.floors = floors;
+        }
+
+        ticks++;
+
+        if (targetHeight.get() == NO_TARGET) {
             return;
         }
 
         int oldHeight = height.get();
-        int newHeight = Math.abs(targetY - location.y);
+        int newHeight = Math.abs(targetHeight.get() - location.y);
         height.update(newHeight);
 
         int distance = Math.abs(newHeight - oldHeight);
         Collection<Player> players = location.getRelative(0, oldHeight - 3, 0).toBukkit().getNearbyPlayers(5d);
 
         Location targetLocation = location.toBukkitCentered();
-        targetLocation.setY(targetY);
+        targetLocation.setY(targetHeight.get());
 
         pos = oldHeight;
 
         Vector velocity = new Vector(0, newHeight < oldHeight ? -0.05 : 0.05, 0);
-        targetY = NO_TARGET;
+        targetHeight.update(NO_TARGET);
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, pos - 3, 0));
@@ -118,6 +144,10 @@ public class ElevatorInstance extends StructureInstance {
                 player.teleport(playerLocation);
             }
         }, distance * 20L);
+    }
+
+    public void setTargetHeight(int height) {
+        targetHeight.update(height);
     }
 
 }
