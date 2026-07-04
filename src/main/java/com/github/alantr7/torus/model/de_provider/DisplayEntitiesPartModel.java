@@ -5,7 +5,6 @@ import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.PartModelTemplate;
 import com.github.alantr7.torus.model.animation.Animation;
 import io.papermc.paper.entity.TeleportFlag;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;

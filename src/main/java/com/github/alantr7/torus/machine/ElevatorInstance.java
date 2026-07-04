@@ -10,6 +10,7 @@ import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.socket.DataSocket;
+import com.github.alantr7.torus.utils.TeleportUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Bukkit;
@@ -18,7 +19,6 @@ import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -55,7 +55,7 @@ public class ElevatorInstance extends StructureInstance {
 
     @Override
     public void onModelSpawn() {
-        elevatorCarrier = location.world.getBukkit().spawn(location.toBukkitCentered().add(0, height.get() + 1d, 0), ArmorStand.class);
+        elevatorCarrier = location.world.getBukkit().spawn(location.toBukkitCentered().add(0, height.get() - 3d, 0), ArmorStand.class);
         elevatorCarrier.setPersistent(false);
         elevatorCarrier.setInvisible(true);
         elevatorCarrier.setInvulnerable(true);
@@ -114,14 +114,12 @@ public class ElevatorInstance extends StructureInstance {
         height.update(newHeight);
 
         int distance = Math.abs(newHeight - oldHeight);
-        Collection<Player> players = location.getRelative(0, oldHeight - 3, 0).toBukkit().getNearbyPlayers(5d);
+        Collection<Player> players = location.world.getBukkit().getNearbyEntities(location.getRelative(0, oldHeight - 3, 0).toBukkit(), 5, 5, 5, e -> e instanceof Player).stream().map(e -> (Player) e).toList();
 
         Location targetLocation = location.toBukkitCentered();
         targetLocation.setY(targetHeight.get());
 
         pos = oldHeight;
-
-        Vector velocity = new Vector(0, newHeight < oldHeight ? -0.05 : 0.05, 0);
         targetHeight.update(NO_TARGET);
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
@@ -129,7 +127,10 @@ public class ElevatorInstance extends StructureInstance {
             pos -= (newHeight < oldHeight ? 0.05f : -0.05f);
             if (newHeight > oldHeight) {
                 for (Player player : players) {
-                    player.setVelocity(velocity);
+                    player.setGravity(false);
+                    Location playerLocation = player.getLocation();
+                    Location loc2 = new Location(playerLocation.getWorld(), playerLocation.getX(), location.y + pos, playerLocation.getZ());
+                    TeleportUtils.teleport(player, loc2);
                 }
             }
         }, 1, 1);
@@ -139,6 +140,7 @@ public class ElevatorInstance extends StructureInstance {
             task.cancel();
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, newHeight - 3, 0));
             for (Player player : players) {
+                player.setGravity(true);
                 Location playerLocation = player.getLocation();
                 playerLocation.setY(location.y + newHeight + 1);
                 player.teleport(playerLocation);

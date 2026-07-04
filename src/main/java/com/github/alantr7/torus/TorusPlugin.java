@@ -25,6 +25,7 @@ import com.github.alantr7.torus.player.TorusPlayerManager;
 import com.github.alantr7.torus.recipe.TorusRecipeManager;
 import com.github.alantr7.torus.structure.StructureRegistry;
 import com.github.alantr7.torus.utils.Compatibility;
+import com.github.alantr7.torus.utils.TeleportUtils;
 import com.github.alantr7.torus.world.TorusWorldManager;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
@@ -64,6 +65,7 @@ public class TorusPlugin extends BukkitPlugin {
         addonManager = new TorusAddonManager();
 
         checkPaperAPI();
+        TeleportUtils.init();
     }
 
     @Override

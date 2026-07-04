@@ -88,9 +88,9 @@ public class Localization {
 
             // add missing lines by using the fallback locale
             if (fallback != null) {
-                fallback.dictionary.forEach((key, value) -> {
+                fallback.dictionary.forEach((key, val) -> {
                     if (!locale.dictionary.containsKey(key))
-                        locale.dictionary.put(key, value);
+                        locale.dictionary.put(key, val);
                 });
             }
 

@@ -10,9 +10,12 @@
         <module name="Torus" />
       </profile>
       <profile name="Annotation profile for Torus" enabled="true">
-        <sourceOutputDir name="../../.out/Torus/generated-sources/annotations" />
-        <sourceTestOutputDir name="../../.out/Torus/generated-test-sources/test-annotations" />
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
         <module name="torus" />
       </profile>
     </annotationProcessing>
