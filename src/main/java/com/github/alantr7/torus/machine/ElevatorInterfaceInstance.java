@@ -126,39 +126,44 @@ public class ElevatorInterfaceInstance extends StructureInstance {
     }
 
     protected void updateScreen() {
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttons[i] != null) {
-                buttons[i].remove();
+        int i = 0;
+        if (elevator != null) {
+            String padding = " ".repeat(24);
+            float[] positionXZ = MathUtils.rotateVector(new float[]{-0.1f, 0.35f}, direction.rotH);
+            for (var entry : elevator.floors.entrySet()) {
+                TextDisplay button = buttons[i];
+                if (button == null) {
+                    Location buttonLocation = location.toBukkitCentered();
+                    buttonLocation.add(positionXZ[0], (1 - panelHeight) / 2f + ((7 - i) / 8f) * panelHeight, positionXZ[1]);
+
+                    button = location.world.getBukkit().spawn(buttonLocation, TextDisplay.class);
+                    button.setRotation(direction.rotH + 180, 0);
+                    button.setDefaultBackground(false);
+                    button.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
+                    button.setDisplayHeight(panelHeight / 8);
+                    button.setPersistent(false);
+                    button.setShadowed(false);
+                    button.setBrightness(new Display.Brightness(15, 15));
+                    button.setAlignment(TextDisplay.TextAlignment.LEFT);
+
+                    Transformation transformation = button.getTransformation();
+                    transformation.getScale().set(0.4f, 0.4f, 0.4f);
+                    button.setTransformation(transformation);
+
+                    buttons[i] = button;
+                }
+
+                ChatColor color = elevator.targetHeight.get().equals(entry.getKey()) ? ChatColor.DARK_GREEN : entry.getKey().equals(elevator.getFloor()) ? ChatColor.DARK_AQUA : ChatColor.DARK_GRAY;
+                button.setText(padding + "\n" + color + "█ " + ChatColor.BLACK + entry.getValue());
+                i++;
             }
-            buttons[i] = null;
         }
 
-        if (elevator == null)
-            return;
-
-        float[] positionXZ = MathUtils.rotateVector(new float[] { 0f, 0.35f }, direction.rotH);
-
-        int i = 0;
-        for (var entry : elevator.floors.entrySet()) {
-            Location buttonLocation = location.toBukkitCentered();
-            buttonLocation.add(positionXZ[0], (1 - panelHeight) / 2f + ((7 - i) / 8f) * panelHeight, positionXZ[1]);
-
-            TextDisplay button = location.world.getBukkit().spawn(buttonLocation, TextDisplay.class);
-            button.setRotation(direction.rotH + 180, 0);
-            button.setDisplayWidth(1);
-            button.setDefaultBackground(false);
-            button.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
-            button.setDisplayHeight(panelHeight / 8);
-            button.setPersistent(false);
-            button.setShadowed(false);
-            button.setBrightness(new Display.Brightness(15, 15));
-            button.setText(ChatColor.BLACK + entry.getValue());
-
-            Transformation transformation = button.getTransformation();
-            transformation.getScale().set(0.4f, 0.4f, 0.4f);
-            button.setTransformation(transformation);
-
-            buttons[i++] = button;
+        for (; i < buttons.length; i++) {
+            if (buttons[i] != null) {
+                buttons[i].remove();
+                buttons[i] = null;
+            }
         }
     }
 

@@ -40,6 +40,8 @@ public class ElevatorInstance extends StructureInstance {
 
     protected DataSocket dataSocket;
 
+    protected boolean isMoving;
+
     ElevatorInstance(LoadContext context) {
         super(context);
     }
@@ -114,7 +116,7 @@ public class ElevatorInstance extends StructureInstance {
 
         ticks++;
 
-        if (targetHeight.get() == NO_TARGET) {
+        if (isMoving || targetHeight.get() == NO_TARGET) {
             return;
         }
 
@@ -129,7 +131,7 @@ public class ElevatorInstance extends StructureInstance {
         targetLocation.setY(targetHeight.get());
 
         pos = oldHeight;
-        targetHeight.update(NO_TARGET);
+        isMoving = true;
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, pos - 3, 0));
@@ -138,7 +140,7 @@ public class ElevatorInstance extends StructureInstance {
                 for (Player player : players) {
                     player.setGravity(false);
                     Location playerLocation = player.getLocation();
-                    Location loc2 = new Location(playerLocation.getWorld(), playerLocation.getX(), location.y + pos, playerLocation.getZ());
+                    Location loc2 = new Location(playerLocation.getWorld(), playerLocation.getX(), location.y + pos + 0.1, playerLocation.getZ());
                     TeleportUtils.teleport(player, loc2);
                 }
             }
@@ -154,11 +156,27 @@ public class ElevatorInstance extends StructureInstance {
                 playerLocation.setY(location.y + newHeight + 1);
                 player.teleport(playerLocation);
             }
+            targetHeight.update(NO_TARGET);
+            isMoving = false;
         }, distance * 20L);
     }
 
     public void setTargetHeight(int height) {
         targetHeight.update(height);
+    }
+
+    public int getFloor() {
+        int floor = 1024;
+        float distance = 1024;
+        for (var entry : floors.entrySet()) {
+            float d = Math.abs((entry.getKey() - location.y) - pos);
+            if (d < distance) {
+                floor = entry.getKey();
+                distance = d;
+            }
+        }
+
+        return floor;
     }
 
 }
