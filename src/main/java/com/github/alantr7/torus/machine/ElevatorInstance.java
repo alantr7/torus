@@ -90,14 +90,23 @@ public class ElevatorInstance extends StructureInstance {
         // Update floors list
         if (ticks % 3 == 0) {
             TreeMap<Integer, String> floors = new TreeMap<>(Comparator.comparingInt(a -> (int) a).reversed());
+            Map<Integer, ElevatorDetectorInstance> detectors = new HashMap<>();
             for (Node node : dataSocket.network.nodes) {
                 if (node.structure instanceof ElevatorDetectorInstance detector) {
                     floors.put(detector.location.y + 1, "");
+                    detectors.put(detector.location.y + 1, detector);
                 }
             }
             int floor = floors.size();
             for (var entry : floors.entrySet()) {
-                entry.setValue("Floor " + floor--);
+                ElevatorDetectorInstance detector = detectors.get(entry.getKey());
+                if (!detector.name.get().isBlank()) {
+                    detector.assignedName = detector.name.get();
+                } else {
+                    detector.assignedName = "Floor " + floor;
+                }
+                entry.setValue(detector.assignedName);
+                floor--;
             }
 
             this.floors = floors;

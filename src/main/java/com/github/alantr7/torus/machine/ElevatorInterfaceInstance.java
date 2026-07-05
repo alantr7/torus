@@ -152,7 +152,7 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             button.setPersistent(false);
             button.setShadowed(false);
             button.setBrightness(new Display.Brightness(15, 15));
-            button.setText(ChatColor.BLACK + entry.getValue() + "(y: " + entry.getKey() + ")");
+            button.setText(ChatColor.BLACK + entry.getValue());
 
             Transformation transformation = button.getTransformation();
             transformation.getScale().set(0.4f, 0.4f, 0.4f);

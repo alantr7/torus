@@ -2,6 +2,7 @@ package com.github.alantr7.torus.machine;
 
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.structure.Structure;
+import com.github.alantr7.torus.structure.StructureFlag;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.builder.StructurePartDef;
@@ -17,6 +18,7 @@ public class ElevatorDetector extends Structure {
 
     public ElevatorDetector() {
         super(TorusPlugin.DEFAULT_ADDON, "elevator_detector", ElevatorDetectorInstance.class);
+        setFlags(StructureFlag.COLLIDABLE | StructureFlag.INTERACTABLE);
     }
 
     @Override
