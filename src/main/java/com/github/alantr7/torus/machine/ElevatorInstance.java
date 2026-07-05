@@ -16,6 +16,7 @@ import com.github.alantr7.torus.world.Direction;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,6 +38,8 @@ public class ElevatorInstance extends StructureInstance {
     protected Map<Integer, String> floors = new HashMap<>();
 
     protected ArmorStand elevatorCarrier;
+
+    protected Shulker shulker;
 
     protected DataSocket dataSocket;
 
@@ -67,14 +70,7 @@ public class ElevatorInstance extends StructureInstance {
         elevatorCarrier.setMarker(true);
         elevatorCarrier.addPassenger(((DisplayEntitiesPartModel) model.getPartByName("platform")).parent);
 
-        Shulker shulker = location.world.getBukkit().spawn(location.toBukkitCentered(), Shulker.class);
-        shulker.setAI(false);
-        shulker.setPersistent(false);
-        shulker.setColor(DyeColor.GRAY);
-        shulker.getAttribute(Attribute.SCALE).setBaseValue(3d);
-        shulker.setInvulnerable(true);
-        shulker.setInvisible(true);
-        elevatorCarrier.addPassenger(shulker);
+        fillPlatform(Material.BARRIER);
     }
 
     @Override
@@ -127,6 +123,8 @@ public class ElevatorInstance extends StructureInstance {
             return;
         }
 
+        fillPlatform(Material.AIR);
+        spawnShulker();
         int oldHeight = height.get();
         int newHeight = Math.abs(targetHeight.get() - location.y);
         height.update(newHeight);
@@ -166,7 +164,28 @@ public class ElevatorInstance extends StructureInstance {
             }
             targetHeight.update(NO_TARGET);
             isMoving = false;
+            fillPlatform(Material.BARRIER);
+            shulker.remove();
         }, distance * 15L);
+    }
+
+    private void fillPlatform(Material material) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                location.getRelative(i, height.get() - 1, j).toBukkit().getBlock().setType(material);
+            }
+        }
+    }
+
+    private void spawnShulker() {
+        shulker = location.world.getBukkit().spawn(location.toBukkitCentered(), Shulker.class);
+        shulker.setAI(false);
+        shulker.setPersistent(false);
+        shulker.setColor(DyeColor.GRAY);
+        shulker.getAttribute(Attribute.SCALE).setBaseValue(3d);
+        shulker.setInvulnerable(true);
+        shulker.setInvisible(true);
+        elevatorCarrier.addPassenger(shulker);
     }
 
     public void setTargetHeight(int height) {
