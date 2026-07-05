@@ -1,4 +1,6 @@
 type: SINGLEPART
 cases:
   fallback:
+    model: "elevator_interface_off"
+  state[online=true]:
     model: "elevator_interface"

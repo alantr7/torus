@@ -24,6 +24,8 @@ import org.bukkit.util.Vector;
 import java.util.Collections;
 import java.util.Map;
 
+import static com.github.alantr7.torus.machine.ElevatorInterface.STATE_ONLINE;
+
 public class ElevatorInterfaceInstance extends StructureInstance {
 
     protected static final float panelWidth = 0.8f;
@@ -77,6 +79,7 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             // todo: should only be called if map is changed
             updateScreen();
         }
+        state.set(STATE_ONLINE, elevator != null);
     }
 
     @Override

@@ -1,0 +1,7 @@
+model_version: 2
+
+base:
+  renderer: DISPLAY_ENTITIES
+  elements:
+    - item_display,light_gray_concrete,0,0.5,0.4375,1,1,0.125,0,0,0
+    - item_display,black_concrete,0,0.5,0.418125,0.875,0.875,0.125,0,0,0
