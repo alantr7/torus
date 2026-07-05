@@ -42,6 +42,8 @@ public class ElevatorInstance extends StructureInstance {
 
     protected boolean isMoving;
 
+    protected BukkitTask moveTask;
+
     ElevatorInstance(LoadContext context) {
         super(context);
     }
@@ -81,7 +83,12 @@ public class ElevatorInstance extends StructureInstance {
             passenger.remove();
         }
         elevatorCarrier.remove();
+        if (moveTask != null) {
+            moveTask.cancel();
+        }
     }
+
+    static float increment = 0.075f;
 
     float pos;
 
@@ -133,9 +140,9 @@ public class ElevatorInstance extends StructureInstance {
         pos = oldHeight;
         isMoving = true;
 
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
+        moveTask = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, pos - 3, 0));
-            pos -= (newHeight < oldHeight ? 0.05f : -0.05f);
+            pos -= (newHeight < oldHeight ? increment : -increment);
             if (newHeight > oldHeight) {
                 for (Player player : players) {
                     player.setGravity(false);
@@ -148,7 +155,8 @@ public class ElevatorInstance extends StructureInstance {
 
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.setGravity(false);
-            task.cancel();
+            moveTask.cancel();
+            moveTask = null;
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, newHeight - 3, 0));
             for (Player player : players) {
                 player.setGravity(true);
@@ -158,7 +166,7 @@ public class ElevatorInstance extends StructureInstance {
             }
             targetHeight.update(NO_TARGET);
             isMoving = false;
-        }, distance * 20L);
+        }, distance * 15L);
     }
 
     public void setTargetHeight(int height) {
