@@ -31,7 +31,7 @@ public class ElevatorInstance extends StructureInstance {
 
     // 3 blocks per second
 
-    protected Data<Integer> height = dataContainer.persist("height", Data.Type.INT, 0);
+    protected Data<Integer> height = dataContainer.persist("height", Data.Type.INT, 4);
 
     protected Data<Integer> targetHeight = dataContainer.persist("target_height", Data.Type.INT, NO_TARGET);
 
@@ -82,6 +82,11 @@ public class ElevatorInstance extends StructureInstance {
         if (moveTask != null) {
             moveTask.cancel();
         }
+    }
+
+    @Override
+    public void onRemove() {
+        fillPlatform(Material.AIR);
     }
 
     static float increment = 0.075f;
