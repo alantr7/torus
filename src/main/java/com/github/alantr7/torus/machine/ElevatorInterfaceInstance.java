@@ -79,7 +79,7 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             // todo: should only be called if map is changed
             updateScreen();
         }
-        state.set(STATE_ONLINE, elevator != null);
+        state.set(STATE_ONLINE, elevator != null && elevator.consumeEnergy(5) == 5);
     }
 
     @Override

@@ -4,15 +4,18 @@ import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.network.Node;
+import com.github.alantr7.torus.structure.EnergyContainer;
 import com.github.alantr7.torus.structure.LoadContext;
 import com.github.alantr7.torus.structure.Structure;
 import com.github.alantr7.torus.structure.StructureInstance;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.socket.DataSocket;
+import com.github.alantr7.torus.structure.socket.EnergySocket;
 import com.github.alantr7.torus.utils.TeleportUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -24,7 +27,7 @@ import org.bukkit.util.Transformation;
 
 import java.util.*;
 
-public class ElevatorInstance extends StructureInstance {
+public class ElevatorInstance extends StructureInstance implements EnergyContainer {
 
     private static final int NO_TARGET = 512;
 
@@ -36,6 +39,9 @@ public class ElevatorInstance extends StructureInstance {
 
     protected Data<Integer> targetHeight = dataContainer.persist("target_height", Data.Type.INT, NO_TARGET);
 
+    @Getter
+    protected Data<Integer> storedEnergy = dataContainer.persist("energy", Data.Type.INT, 0);
+
     protected Map<Integer, String> floors = new HashMap<>();
 
     protected ArmorStand elevatorCarrier;
@@ -43,6 +49,8 @@ public class ElevatorInstance extends StructureInstance {
     protected Shulker shulker;
 
     protected ItemDisplay crane;
+
+    protected EnergySocket inEnergy;
 
     protected DataSocket dataSocket;
 
@@ -61,6 +69,7 @@ public class ElevatorInstance extends StructureInstance {
     @Override
     protected void setup() throws SetupException {
         dataSocket = requireSocket("data", DataSocket.class);
+        inEnergy = requireSocket("in_energy", EnergySocket.class);
     }
 
     @Override
@@ -102,6 +111,8 @@ public class ElevatorInstance extends StructureInstance {
 
     @Override
     public void tick(boolean isVirtual) {
+        inEnergy.maintainEnergy(this);
+
         // Update floors list
         if (ticks % 3 == 0) {
             TreeMap<Integer, String> floors = new TreeMap<>(Comparator.comparingInt(a -> (int) a).reversed());
@@ -137,9 +148,14 @@ public class ElevatorInstance extends StructureInstance {
 
         int oldHeight = height.get();
         int newHeight = Math.abs(targetHeight.get() - location.y);
-        height.update(newHeight);
-
         int distance = Math.abs(newHeight - oldHeight);
+        if (!hasSufficientEnergy(distance * 300)) {
+            return;
+        }
+
+        height.update(newHeight);
+        consumeEnergy(distance * 300);
+
         Collection<Player> players = location.world.getBukkit().getNearbyEntities(location.getRelative(0, oldHeight - 3, 0).toBukkit(), 5, 5, 5, e -> e instanceof Player).stream().map(e -> (Player) e).toList();
 
         Location targetLocation = location.toBukkitCentered();
@@ -225,6 +241,11 @@ public class ElevatorInstance extends StructureInstance {
         }
 
         return floor;
+    }
+
+    @Override
+    public int getEnergyCapacity() {
+        return 15_000;
     }
 
 }
