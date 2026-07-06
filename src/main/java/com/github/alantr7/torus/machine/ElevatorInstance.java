@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Transformation;
 
 import java.util.*;
 
@@ -40,6 +41,8 @@ public class ElevatorInstance extends StructureInstance {
     protected ArmorStand elevatorCarrier;
 
     protected Shulker shulker;
+
+    protected ItemDisplay crane;
 
     protected DataSocket dataSocket;
 
@@ -69,6 +72,8 @@ public class ElevatorInstance extends StructureInstance {
         elevatorCarrier.setGravity(false);
         elevatorCarrier.setMarker(true);
         elevatorCarrier.addPassenger(((DisplayEntitiesPartModel) model.getPartByName("platform")).parent);
+
+        crane = (ItemDisplay) ((DisplayEntitiesPartModel) model.getPartByName("crane")).entityReferences.getFirst().getEntity();
 
         fillPlatform(Material.BARRIER);
     }
@@ -123,13 +128,13 @@ public class ElevatorInstance extends StructureInstance {
         }
 
         ticks++;
-
         if (isMoving || targetHeight.get() == NO_TARGET) {
             return;
         }
 
         fillPlatform(Material.AIR);
         spawnShulker();
+
         int oldHeight = height.get();
         int newHeight = Math.abs(targetHeight.get() - location.y);
         height.update(newHeight);
@@ -145,7 +150,6 @@ public class ElevatorInstance extends StructureInstance {
 
         moveTask = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, pos - 3, 0));
-            pos -= (newHeight < oldHeight ? increment : -increment);
             if (newHeight > oldHeight) {
                 for (Player player : players) {
                     player.setGravity(false);
@@ -154,7 +158,10 @@ public class ElevatorInstance extends StructureInstance {
                     TeleportUtils.teleport(player, loc2);
                 }
             }
-        }, 1, 1);
+            int amplifier = newHeight < oldHeight ? 1 : -1;
+            updateCrane(pos + amplifier * increment - 0.1f);
+            pos -= amplifier * increment;
+        }, 2, 1);
 
         Bukkit.getScheduler().runTaskLater(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.setGravity(false);
@@ -171,7 +178,16 @@ public class ElevatorInstance extends StructureInstance {
             isMoving = false;
             fillPlatform(Material.BARRIER);
             shulker.remove();
-        }, distance * 15L);
+            pos = height.get();
+            updateCrane(pos);
+        }, distance * 15L - 1L);
+    }
+
+    private void updateCrane(float pos) {
+        Transformation transformation = crane.getTransformation();
+        transformation.getTranslation().y = (pos - 1) / 2f + 0.88f;
+        transformation.getScale().y = pos - 1f;
+        crane.setTransformation(transformation);
     }
 
     private void fillPlatform(Material material) {

@@ -41,9 +41,7 @@ public class Elevator extends Structure {
           new StructurePartDef("data", new Vector3f(1, 0, -1), new StructureSocketDef(
             Socket.Medium.DATA, Socket.FlowDirection.ALL, direction.getRight().mask()
           )),
-          new StructurePartDef("crane1", new Vector3f()),
-          new StructurePartDef("crane2", new Vector3f()),
-          new StructurePartDef("crane3", new Vector3f()),
+          new StructurePartDef("crane", new Vector3f())
         }), direction);
     }
 

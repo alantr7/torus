@@ -5,13 +5,34 @@ base:
   elements:
     - item_display,light_gray_concrete,0,0.4375,0,1,0.875,1,0,0,0
     - item_display,light_gray_concrete,0.9375,0.5,-0.375,0.3125,0.3125,0.4375,0,0,0
+    - item_display,light_gray_concrete,0.9375,0.5,-0.0625,0.5625,0.5625,0.875,0,0,0
+    # vertical
+    - item_display,light_gray_concrete,1.0625,0.5,-0.0625,0.0625,0.6875,0.8745,0,0,0
+    - item_display,light_gray_concrete,0.9375,0.5,-0.0625,0.0625,0.6875,0.8745,0,0,0
+    - item_display,light_gray_concrete,0.8125,0.5,-0.0625,0.0625,0.6875,0.8745,0,0,0
+    # horizontal
+    - item_display,light_gray_concrete,0.9375,0.625,-0.0625,0.6875,0.0625,0.8745,0,0,0
+    - item_display,light_gray_concrete,0.9375,0.5,-0.0625,0.6875,0.0625,0.8745,0,0,0
+    - item_display,light_gray_concrete,0.9375,0.375,-0.0625,0.6875,0.0625,0.8745,0,0,0
+
+    - item_display,light_gray_concrete,0.9375,0.5,-1.0,0.375,0.4375,0.5,0,0,0
+
+    - item_display,light_gray_concrete,0.5,0.4375,0.625,1.375,0.5625,0.375,0,0,0
+
+    - item_display,gray_wool,0.9375,0.5,-0.9375,0.9375,0.1875,0.1875,0,90,0
+    - item_display,white_concrete,1.1875,0.5,-1.0,0.5,0.1875,0.1875,0,0,0
+    - item_display,end_rod,0.9375,0.5,0.0625,2,0.875,2,90,0,0
+
+    - item_display,gray_concrete,0.9375,0.5,-1.4375,0.625,0.625,0.125,0,0,0
+    - item_display,gray_concrete,1.4375,0.5,-1.0,0.625,0.625,0.125,0,-90,0
+    - item_display,cyan_terracotta,0,2.5,0,0.625,3,0.625,0,0,0
 
 platform:
   renderer: DISPLAY_ENTITIES
   elements:
     - item_display,light_gray_concrete,0,2.8125,0,3,0.375,3,0,0,0
 
-crane1:
+crane:
   renderer: DISPLAY_ENTITIES
   elements:
-    - item_display,cyan_terracotta,0,2.25,0,0.625,2.8125,0.625,0,0,0
+    - item_display,cyan_terracotta,0,2.5,0,0.5,3,0.5,0,0,0
