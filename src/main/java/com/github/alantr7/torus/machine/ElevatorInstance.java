@@ -24,6 +24,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Transformation;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -164,11 +165,14 @@ public class ElevatorInstance extends StructureInstance implements EnergyContain
         pos = oldHeight;
         isMoving = true;
 
+        Vector velocity = new Vector(0, increment, 0);
+
         moveTask = Bukkit.getScheduler().runTaskTimer(TorusPlugin.getInstance(), () -> {
             elevatorCarrier.teleport(location.toBukkitCentered().add(0, pos - 3, 0));
+            elevatorCarrier.setVelocity(velocity);
             if (newHeight > oldHeight) {
                 for (Player player : players) {
-                    player.setGravity(false);
+                    player.setVelocity(velocity);
                     Location playerLocation = player.getLocation();
                     Location loc2 = new Location(playerLocation.getWorld(), playerLocation.getX(), location.y + pos + 0.1, playerLocation.getZ());
                     TeleportUtils.teleport(player, loc2);
