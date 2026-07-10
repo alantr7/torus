@@ -21,9 +21,6 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 
-import java.util.Collections;
-import java.util.Map;
-
 import static com.github.alantr7.torus.machine.ElevatorInterface.STATE_ONLINE;
 
 public class ElevatorInterfaceInstance extends StructureInstance {
@@ -76,7 +73,6 @@ public class ElevatorInterfaceInstance extends StructureInstance {
                     break;
                 }
             }
-            // todo: should only be called if map is changed
             updateScreen();
         }
         state.set(STATE_ONLINE, elevator != null && elevator.consumeEnergy(5) == 5);
@@ -101,12 +97,7 @@ public class ElevatorInterfaceInstance extends StructureInstance {
             return true;
 
         Vector dr = event.getPlayer().getEyeLocation().getDirection().multiply(0.07);
-        Vector r = location.toBukkit().add(event.getClickedPosition()).subtract(location.toBukkit()).clone().toVector();
-
-        // middle for r: x = 0, y = 0.5, z = 0
-
-        event.getPlayer().sendMessage("r: " + r);
-        event.getPlayer().sendMessage("dr: " + dr);
+        Vector r = event.getClickedPosition();
 
         // Make it relative
         for (int i = 0; i < 18; i++) {
