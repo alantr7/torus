@@ -106,6 +106,8 @@ public class ElevatorInstance extends StructureInstance implements EnergyContain
 
     static float increment = 0.075f;
 
+    static float ticksPerBlock = 1 / increment;
+
     float pos;
 
     int ticks;
@@ -200,7 +202,7 @@ public class ElevatorInstance extends StructureInstance implements EnergyContain
             shulker.remove();
             pos = height.get();
             updateCrane(pos);
-        }, distance * 15L - 1L);
+        }, (long) Math.ceil(distance * ticksPerBlock));
     }
 
     private void updateCrane(float pos) {
