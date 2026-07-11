@@ -16,10 +16,7 @@ import com.github.alantr7.torus.machine.ElevatorInstance;
 import com.github.alantr7.torus.model.PartModel;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.model.de_provider.EntityReference;
-import com.github.alantr7.torus.structure.Conductor;
-import com.github.alantr7.torus.structure.Status;
-import com.github.alantr7.torus.structure.Structure;
-import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.socket.Socket;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.TorusChunk;
@@ -213,6 +210,9 @@ public class Commands {
           ctx.respond(ChatColor.GOLD + "Structure ID: " + ChatColor.RESET + structure.structure.namespacedId);
           ctx.respond(ChatColor.GOLD + "Owner ID: " + ChatColor.RESET + structure.getOwnerId());
           ctx.respond(ChatColor.GOLD + "Status: " + ChatColor.RESET + structure.getStatus());
+          if (structure instanceof DataTransmitter transmitter) {
+              ctx.respond(ChatColor.GOLD + "MAC: " + ChatColor.RESET + transmitter.getMAC());
+          }
           ctx.respond(ChatColor.GOLD + "State:");
           for (var entry : structure.getState().getEntries()) {
               ctx.respond("  - " + entry.getKey() + ": " + entry.getValue());

@@ -1,17 +1,16 @@
 package com.github.alantr7.torus.machine;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
 import com.github.alantr7.torus.network.Node;
-import com.github.alantr7.torus.structure.EnergyContainer;
-import com.github.alantr7.torus.structure.LoadContext;
-import com.github.alantr7.torus.structure.Structure;
-import com.github.alantr7.torus.structure.StructureInstance;
+import com.github.alantr7.torus.structure.*;
 import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.data.Data;
 import com.github.alantr7.torus.structure.socket.DataSocket;
 import com.github.alantr7.torus.structure.socket.EnergySocket;
+import com.github.alantr7.torus.utils.BitUtils;
 import com.github.alantr7.torus.utils.TeleportUtils;
 import com.github.alantr7.torus.world.BlockLocation;
 import com.github.alantr7.torus.world.Direction;
@@ -28,7 +27,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class ElevatorInstance extends StructureInstance implements EnergyContainer {
+public class ElevatorInstance extends StructureInstance implements EnergyContainer, DataTransmitter {
 
     private static final int NO_TARGET = 512;
 
@@ -71,6 +70,7 @@ public class ElevatorInstance extends StructureInstance implements EnergyContain
     protected void setup() throws SetupException {
         dataSocket = requireSocket("data", DataSocket.class);
         inEnergy = requireSocket("in_energy", EnergySocket.class);
+        dataContainer.persist("mac", Data.Type.STRING, DataTransmitter.generateMAC());
     }
 
     @Override
@@ -252,6 +252,17 @@ public class ElevatorInstance extends StructureInstance implements EnergyContain
     @Override
     public int getEnergyCapacity() {
         return 15_000;
+    }
+
+    @Override
+    public String getMAC() {
+        return dataContainer.getOrDefault("mac", Data.Type.STRING, null);
+    }
+
+    @Override
+    public int onDataRequest(DataTransmitter requester, int input) {
+        int action = BitUtils.read(input, 0, 4);
+        return 3;
     }
 
 }
