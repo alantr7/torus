@@ -1,6 +1,5 @@
 package com.github.alantr7.torus.machine;
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.github.alantr7.torus.TorusPlugin;
 import com.github.alantr7.torus.exception.SetupException;
 import com.github.alantr7.torus.model.de_provider.DisplayEntitiesPartModel;
@@ -261,8 +260,18 @@ public class ElevatorInstance extends StructureInstance implements EnergyContain
 
     @Override
     public int onDataRequest(DataTransmitter requester, int input) {
-        int action = BitUtils.read(input, 0, 4);
-        return 3;
+        int action = BitUtils.read(input, 16, 24 );
+        if (action == 1) {
+            int floor = floors.size() - BitUtils.read(input, 24, 32) - 1;
+            int index = 0;
+            for (int k : floors.keySet()) {
+                if (index++ == floor) {
+                    setTargetHeight(k);
+                    return 1;
+                }
+            }
+        }
+        return 0;
     }
 
 }
