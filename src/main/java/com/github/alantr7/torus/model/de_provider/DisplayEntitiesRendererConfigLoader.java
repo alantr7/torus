@@ -119,19 +119,21 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
             material = Material.valueOf(materialMappings.getOrDefault(materialName, materialName));
         }
 
-        float[] offsetScaleRotation = {
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
+        float[] offsetScaleRotation = new float[10];
+        offsetScaleRotation[0] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[1] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[2] = Float.parseFloat(nextString(raw, matcher));
 
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
+        offsetScaleRotation[3] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[4] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[5] = Float.parseFloat(nextString(raw, matcher));
 
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-        };
+        offsetScaleRotation[6] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[7] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[8] = Float.parseFloat(nextString(raw, matcher));
+
+        String rawViewRange = nextString(raw, matcher);
+        offsetScaleRotation[9] = rawViewRange != null ? Float.parseFloat(rawViewRange) : 1f;
 
         ItemStack itemStack = (material == Material.PLAYER_HEAD && itemAttributes.containsKey("texture"))
           ? HeadData.create("http://textures.minecraft.net/texture/" + itemAttributes.get("texture"))
@@ -165,19 +167,21 @@ public class DisplayEntitiesRendererConfigLoader extends RendererConfigLoader {
             material = Material.valueOf(rawMaterial.toUpperCase());
         }
 
-        float[] offsetScaleRotation = {
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
+        float[] offsetScaleRotation = new float[10];
+        offsetScaleRotation[0] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[1] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[2] = Float.parseFloat(nextString(raw, matcher));
 
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
+        offsetScaleRotation[3] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[4] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[5] = Float.parseFloat(nextString(raw, matcher));
 
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-          Float.parseFloat(nextString(raw, matcher)),
-        };
+        offsetScaleRotation[6] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[7] = Float.parseFloat(nextString(raw, matcher));
+        offsetScaleRotation[8] = Float.parseFloat(nextString(raw, matcher));
+
+        String rawViewRange = nextString(raw, matcher);
+        offsetScaleRotation[9] = rawViewRange != null ? Float.parseFloat(rawViewRange) : 1f;
 
         return new PartModelElementBlockDisplayRenderer(material.createBlockData(), offsetScaleRotation);
     }

@@ -3,4 +3,4 @@ model_version: 2
 base:
   renderer: DISPLAY_ENTITIES
   elements:
-    - item_display,#material,0,0.5,0,0.25,0.25,0.25,0,0,0
+    - item_display,#material,0,0.5,0,0.25,0.25,0.25,0,0,0,0.4

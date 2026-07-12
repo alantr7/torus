@@ -52,6 +52,7 @@ public class DisplayEntitiesPartModelTemplate extends PartModelTemplate {
 
             Display entity = location.getWorld().spawn(location, part.entityType);
             transformEntity(entity, rotatedOffset, part, direction.rotH, pitch.rotV);
+            entity.setViewRange(part.viewRange);
 
             parent.addPassenger(entity);
             entities.add(entity);
