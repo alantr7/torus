@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Singleton
@@ -67,10 +68,10 @@ public class Localization {
     }
 
     private Locale loadLocale(InputStream is, Locale fallback) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             Locale locale = new Locale();
             for (String line; (line = br.readLine()) != null;) {
-                if (line.isBlank())
+                if (line.isBlank() || line.stripLeading().startsWith("#"))
                     continue;
 
                 int separator = line.indexOf('=');
@@ -79,10 +80,9 @@ public class Localization {
                     continue;
                 }
 
-                String key = line.substring(0, separator);
+                String key = line.substring(0, separator).strip();
 
-                // todo: multiple lines
-                String value = ChatColor.translateAlternateColorCodes('&', line.substring(separator + 1));
+                String value = ChatColor.translateAlternateColorCodes('&', line.substring(separator + 1)).replace("\\n", "\n");
                 locale.dictionary.put(key, value);
             }
 
