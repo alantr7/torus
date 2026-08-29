@@ -51,6 +51,8 @@ import org.joml.Vector3f;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 public abstract class StructureInstance {
 
     public final Structure structure;
@@ -289,7 +291,7 @@ public abstract class StructureInstance {
         }
         spawnInspectionTooltip();
         if (isCorrupted) {
-            inspectionHologram.setText(org.bukkit.ChatColor.RED + "Corrupted Structure\n" + StructureInstance.COLOR_PROPERTY + "Try to place it again");
+            inspectionHologram.setText(org.bukkit.ChatColor.RED + translate("hologram.corrupted.title") + "\n" + StructureInstance.COLOR_PROPERTY + translate("hologram.corrupted.hint"));
         }
     }
 

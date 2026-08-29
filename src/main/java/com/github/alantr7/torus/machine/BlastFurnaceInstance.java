@@ -16,7 +16,6 @@ import com.github.alantr7.torus.structure.builder.StructureBodyDef;
 import com.github.alantr7.torus.structure.inventory.BukkitStructureInventory;
 import com.github.alantr7.torus.world.BlockLocation;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -25,6 +24,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.github.alantr7.torus.lang.Localization.translate;
 
 public class BlastFurnaceInstance extends StructureInstance implements HologramProvider {
 
@@ -93,21 +94,24 @@ public class BlastFurnaceInstance extends StructureInstance implements HologramP
             List<String> lore = new LinkedList<>();
 
             if (isActive) {
-                meta.setDisplayName(ChatColor.YELLOW + "⏳ Smelting...");
+                meta.setDisplayName(translate("gui.blast_furnace.smelting"));
 
                 float ratio = (float) processedTicks / recipe.smeltDuration;
                 int progress = (int) Math.floor(ratio * 10);
                 lore.addAll(List.of(
-                  ChatColor.GRAY + "" + "■".repeat(progress) + "□".repeat(10 - progress) + " " + String.format("%.0f%%", ratio * 100),
-                  ChatColor.GRAY + "" + (recipe.smeltDuration - processedTicks) + "s remaining",
+                  translate("gui.blast_furnace.progress")
+                    .replace("{bar}", "■".repeat(progress) + "□".repeat(10 - progress))
+                    .replace("{percent}", String.format("%.0f", ratio * 100)),
+                  translate("gui.blast_furnace.time_remaining")
+                    .replace("{time}", String.valueOf(recipe.smeltDuration - processedTicks)),
                   ""
                 ));
             } else {
-                lore.add(ChatColor.GRAY + "Duration: " + recipe.smeltDuration + "s");
+                lore.add(translate("gui.blast_furnace.duration").replace("{duration}", String.valueOf(recipe.smeltDuration)));
                 lore.add("");
-                lore.add(ChatColor.GOLD + "\uD83D\uDD25 Click to smelt");
+                lore.add(translate("gui.blast_furnace.click_smelt"));
             }
-            lore.add((autoSmelt ? (ChatColor.GREEN + "✔") : (ChatColor.RED + "✘")) + " Auto smelting");
+            lore.add(translate("gui.blast_furnace.auto_smelt." + autoSmelt));
 
             meta.setLore(lore);
 
@@ -116,7 +120,7 @@ public class BlastFurnaceInstance extends StructureInstance implements HologramP
         } else {
             ItemStack recipeNotFound = new ItemStack(Material.BARRIER);
             ItemMeta meta = recipeNotFound.getItemMeta();
-            meta.setDisplayName(ChatColor.RED + "✘ Recipe not found");
+            meta.setDisplayName(translate("gui.blast_furnace.no_recipe"));
             recipeNotFound.setItemMeta(meta);
             inventory.setItem(14, recipeNotFound);
         }

@@ -18,9 +18,10 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+
+import static com.github.alantr7.torus.lang.Localization.translate;
 
 @Singleton
 @RequiresPlugin("WorldGuard")
@@ -59,7 +60,7 @@ public class WorldGuardIntEntryPoint {
         for (int i = 0; i < collision.length; i += 3) {
             Location location = BukkitAdapter.adapt(event.getLocation().getRelative(collision[i] + offset[0], collision[i + 1] + offset[1], collision[i + 2] + offset[2]).toBukkit());
             if (!query.testState(location, player, FLAG_TORUS_STRUCTURE_PLACE)  || !query.testBuild(location, player, Flags.BLOCK_PLACE)) {
-                event.getPlayer().asBukkit().sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                event.getPlayer().asBukkit().sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }
@@ -81,7 +82,7 @@ public class WorldGuardIntEntryPoint {
         for (int i = 0; i < collision.length; i += 3) {
             Location location = BukkitAdapter.adapt(event.getLocation().getRelative(collision[i] + offset[0], collision[i + 1] + offset[1], collision[i + 2] + offset[2]).toBukkit());
             if (!query.testState(location, player, FLAG_TORUS_STRUCTURE_BREAK) || !query.testBuild(location, player, Flags.BLOCK_BREAK)) {
-                event.getPlayer().asBukkit().sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                event.getPlayer().asBukkit().sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }
@@ -102,7 +103,7 @@ public class WorldGuardIntEntryPoint {
         for (int i = 0; i < collision.length; i += 3) {
             Location location = BukkitAdapter.adapt(event.getStructure().location.getRelative(collision[i], collision[i + 1], collision[i + 2]).toBukkit());
             if (!query.testState(location, player, FLAG_TORUS_STRUCTURE_BREAK, Flags.INTERACT)) {
-                event.getPlayer().asBukkit().sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                event.getPlayer().asBukkit().sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }
