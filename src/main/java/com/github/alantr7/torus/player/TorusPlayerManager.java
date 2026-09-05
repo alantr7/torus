@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 @Singleton
 public class TorusPlayerManager implements Listener {
 
@@ -41,7 +43,7 @@ public class TorusPlayerManager implements Listener {
     void onPlayerJoin(PlayerJoinEvent event) {
         players.put(event.getPlayer().getUniqueId(), new TorusPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getName()));
         if (event.getPlayer().hasPermission(Permissions.UPDATE_AVAILABLE_NOTIFICATION) && TorusPlugin.getInstance().getVersion().isOlderThan(UpdateChecker.getLatestVersion())) {
-            event.getPlayer().sendMessage(COLOR_UPDATE_MESSAGE + "[Torus] There is an update available.");
+            event.getPlayer().sendMessage(COLOR_UPDATE_MESSAGE + translate("general.update_available"));
         }
     }
 

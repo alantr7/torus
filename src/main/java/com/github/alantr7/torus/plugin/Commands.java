@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.alantr7.torus.lang.Localization.translate;
+
 @Singleton
 public class Commands {
 
@@ -56,18 +58,18 @@ public class Commands {
       .executes(ctx -> {
           Player target = (Player) ctx.getArgument("target");
           if (target == null) {
-              ctx.respond(ChatColor.RED + "Specified player could not be found.");
+              ctx.respond(translate("command.player_not_found"));
               return;
           }
 
           TorusItem item = TorusPlugin.getInstance().getItemRegistry().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
-              ctx.respond(ChatColor.RED + "Specified item does not exist.");
+              ctx.respond(translate("command.item_not_found"));
               return;
           }
 
           if (ctx.optArgument("amount").isEmpty() || (int) ctx.getArgument("amount") < 1 || (int) ctx.getArgument("amount") > 150) {
-              ctx.respond(ChatColor.RED + "Specified amount is not a valid number.");
+              ctx.respond(translate("command.give.invalid_amount"));
               return;
           }
 
@@ -76,8 +78,8 @@ public class Commands {
           stack.setAmount(amount);
 
           target.getInventory().addItem(stack);
-          ctx.respond(ChatColor.YELLOW + "Gave " + amount + " x " + ChatColor.GOLD + item.name);
-          target.sendMessage(ChatColor.YELLOW + "You received " + amount + " x " + ChatColor.GOLD + item.name);
+          ctx.respond(translate("command.give.sender").replace("{amount}", String.valueOf(amount)).replace("{item}", item.name));
+          target.sendMessage(translate("command.give.receiver").replace("{amount}", String.valueOf(amount)).replace("{item}", item.name));
       });
 
     @CommandHandler Command browse = CommandBuilder.using("torus")
@@ -99,12 +101,12 @@ public class Commands {
       .executes(ctx -> {
           TorusItem item = TorusPlugin.getInstance().getItemRegistry().getItemById((String) ctx.getArgument("item"));
           if (item == null) {
-              ctx.respond(ChatColor.RED + "Specified item does not exist.");
+              ctx.respond(translate("command.item_not_found"));
               return;
           }
 
           if (!item.hasRecipes()) {
-              ctx.respond(ChatColor.RED + "This item does not have any recipes.");
+              ctx.respond(translate("command.recipe.no_recipes"));
               return;
           }
 
@@ -112,7 +114,7 @@ public class Commands {
           GUI viewer = TorusPlugin.getInstance().getRecipeRegistry().createRecipeViewer((Player) ctx.getExecutor(), recipe);
 
           if (viewer == null) {
-              ctx.respond(ChatColor.RED + "This recipe can not be previewed.");
+              ctx.respond(translate("gui.browse.category.item.no_recipe_preview"));
               return;
           }
 

@@ -9,11 +9,12 @@ import com.github.alantr7.torus.api.event.PlayerStructureBreakEvent;
 import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.utils.MathUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+
+import static com.github.alantr7.torus.lang.Localization.translate;
 
 @Singleton
 @RequiresPlugin("Residence")
@@ -31,7 +32,7 @@ public class ResidenceIntEntryPoint {
             Location location = event.getLocation().getRelative(collision[i] + offset[0], collision[i + 1] + offset[1], collision[i + 2] + offset[2]).toBukkit();
             ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
             if (res != null && !res.getPermissions().playerHas(player, Flags.place, true)) {
-                player.sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                player.sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }
@@ -49,7 +50,7 @@ public class ResidenceIntEntryPoint {
             Location location = event.getStructure().location.getRelative(collision[i], collision[i + 1], collision[i + 2]).toBukkit();
             ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
             if (res != null && !res.getPermissions().playerHas(player, Flags.destroy, true)) {
-                player.sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                player.sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }

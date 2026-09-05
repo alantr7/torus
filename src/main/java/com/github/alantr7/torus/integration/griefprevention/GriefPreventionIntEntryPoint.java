@@ -7,11 +7,12 @@ import com.github.alantr7.torus.api.event.PlayerStructurePrePlaceEvent;
 import com.github.alantr7.torus.config.MainConfig;
 import com.github.alantr7.torus.utils.MathUtils;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+
+import static com.github.alantr7.torus.lang.Localization.translate;
 
 @Singleton
 @RequiresPlugin("GriefPrevention")
@@ -28,7 +29,7 @@ public class GriefPreventionIntEntryPoint {
         for (int i = 0; i < collision.length; i += 3) {
             Location location = event.getLocation().getRelative(collision[i] + offset[0], collision[i + 1] + offset[1], collision[i + 2] + offset[2]).toBukkit();
             if (GriefPrevention.instance.allowBreak(player, location.getBlock(), location) != null) {
-                player.sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                player.sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }
@@ -45,7 +46,7 @@ public class GriefPreventionIntEntryPoint {
         for (int i = 0; i < collision.length; i += 3) {
             Location location = event.getStructure().location.getRelative(collision[i], collision[i + 1], collision[i + 2]).toBukkit();
             if (GriefPrevention.instance.allowBreak(player, location.getBlock(), location) != null) {
-                player.sendMessage(ChatColor.RED + "Sorry, you can not do that here.");
+                player.sendMessage(translate("interaction.region.no_access"));
                 event.setCancelled(true);
                 return;
             }
